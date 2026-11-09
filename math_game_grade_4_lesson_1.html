@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>គណិតវិទ្យាថ្នាក់ទី៤ - មេរៀនទី១៖ ចំនួន</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Kantumruy Pro', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
+
+  <!-- Main Container -->
+  <div id="app" class="max-w-5xl mx-auto p-4 w-full">
+    
+    <!-- Top Header Navigation -->
+    <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white rounded-2xl p-4 md:p-6 shadow-xl mb-6 flex justify-between items-center flex-wrap gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+          <svg class="w-8 h-8 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold">គណិតវិទ្យាថ្នាក់ទី៤</h1>
+          <p class="text-blue-100 text-xs md:text-sm">មេរៀនទី១ ៖ ចំនួន (រហូតដល់ ១០០ ០០០)</p>
+        </div>
+      </div>
+
+      <!-- User Info Header Badge -->
+      <div id="headerUserInfo" class="hidden flex items-center gap-3 bg-white/10 px-4 py-2 rounded-xl backdrop-blur-md border border-white/20">
+        <div class="text-right">
+          <p id="navUserName" class="font-bold text-yellow-300 text-sm md:text-base"></p>
+          <p id="navUserRole" class="text-xs text-blue-100"></p>
+        </div>
+        <button onclick="logout()" title="ចាកចេញ" class="bg-red-500/80 hover:bg-red-600 p-2 rounded-lg text-white transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== SECTION 1: ROLE & REGISTRATION ==================== -->
+    <section id="authSection" class="max-w-md mx-auto">
+      
+      <!-- Role Selection Card -->
+      <div id="roleCard" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+        <h2 class="text-xl font-bold text-center text-indigo-700 mb-2">សូមជ្រើសរើសតួនាទី</h2>
+        <p class="text-xs text-slate-500 text-center mb-6">ដើម្បីចូលប្រើប្រាស់កម្មវិធីសិក្សា</p>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <button onclick="selectRole('student')" class="flex flex-col items-center justify-center p-6 border-2 border-indigo-100 bg-indigo-50/50 hover:bg-indigo-100 hover:border-indigo-500 rounded-2xl transition group">
+            <span class="text-4xl mb-2 group-hover:scale-110 transition">🧑‍🎓</span>
+            <span class="font-bold text-indigo-900">សិស្ស</span>
+          </button>
+          <button onclick="selectRole('teacher')" class="flex flex-col items-center justify-center p-6 border-2 border-purple-100 bg-purple-50/50 hover:bg-purple-100 hover:border-purple-500 rounded-2xl transition group">
+            <span class="text-4xl mb-2 group-hover:scale-110 transition">🧑‍🏫</span>
+            <span class="font-bold text-purple-900">គ្រូបង្រៀន</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Registration Form Card -->
+      <div id="regCard" class="hidden bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+        <button onclick="backToRoleSelect()" class="text-xs text-slate-400 hover:text-indigo-600 mb-4 flex items-center gap-1 font-semibold">
+          ← ជ្រើសរើសតួនាទីឡើងវិញ
+        </button>
+
+        <h2 id="regTitle" class="text-xl font-bold text-indigo-700 mb-4"></h2>
+        
+        <form id="regForm" onsubmit="handleRegister(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ឈ្មោះពេញ *</label>
+            <input type="text" id="regName" required placeholder="ឧ. កែវ មុន្នី" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ភេទ *</label>
+            <select id="regGender" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+              <option value="ប្រុស">ប្រុស</option>
+              <option value="ស្រី">ស្រី</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ថ្នាក់ទី *</label>
+            <select id="regGrade" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+              <option value="៤A">ថ្នាក់ទី ៤A</option>
+              <option value="៤B">ថ្នាក់ទី ៤B</option>
+              <option value="៤C">ថ្នាក់ទី ៤C</option>
+              <option value="៤D">ថ្នាក់ទី ៤D</option>
+            </select>
+          </div>
+
+          <div id="phoneField" class="hidden">
+            <label class="block text-xs font-bold text-slate-600 mb-1">លេខទូរស័ព្ទ *</label>
+            <input type="tel" id="regPhone" placeholder="ឧ. 012 345 678" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ឈ្មោះសាលារៀន *</label>
+            <input type="text" id="regSchool" required placeholder="ឧ. បឋមសិក្សាវ៉ាត់បូព៌" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-md hover:shadow-indigo-200 mt-2">
+            ចុះឈ្មោះ និងចាប់ផ្តើម
+          </button>
+        </form>
+      </div>
+
+    </section>
+
+    <!-- ==================== SECTION 2: STUDENT DASHBOARD (10 TOPICS) ==================== -->
+    <section id="studentDashboard" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200 gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-800">📚 ជ្រើសរើសចំណុចសិក្សា (មេរៀនទី១)</h2>
+          <p class="text-xs text-slate-500">ជ្រើសរើសប្រធានបទ និងកម្រិតដើម្បីអនុវត្តលំហាត់</p>
+        </div>
+        <button onclick="showStudentHistory()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm flex items-center gap-2">
+          <span>📜</span> ប្រវត្តិពិន្ទុរបស់ខ្ញុំ
+        </button>
+      </div>
+
+      <!-- 10 Topics Grid -->
+      <div id="topicsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Generated Dynamically -->
+      </div>
+    </section>
+
+    <!-- Difficulty Level Selection Modal -->
+    <div id="diffModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+        <h3 class="text-lg font-bold text-slate-800 text-center" id="modalTopicTitle">ជ្រើសរើសកម្រិត</h3>
+        <p class="text-xs text-slate-500 text-center">លំហាត់ចំនួន ២០ សំណួរក្នុងមួយជុំ</p>
+        
+        <div class="space-y-2">
+          <button onclick="startQuiz('easy')" class="w-full p-3 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold rounded-xl flex justify-between items-center transition">
+            <span>🟢 ងាយស្រួល (Easy)</span>
+            <span class="text-xs text-emerald-600">ខ្ទង់តិច</span>
+          </button>
+          <button onclick="startQuiz('medium')" class="w-full p-3 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 font-bold rounded-xl flex justify-between items-center transition">
+            <span>🟡 មធ្យម (Medium)</span>
+            <span class="text-xs text-amber-600">ខ្ទង់មធ្យម</span>
+          </button>
+          <button onclick="startQuiz('hard')" class="w-full p-3 bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-800 font-bold rounded-xl flex justify-between items-center transition">
+            <span>🔴 លំបាក (Hard)</span>
+            <span class="text-xs text-rose-600">ខ្ទង់ធំ</span>
+          </button>
+        </div>
+
+        <button onclick="closeDiffModal()" class="w-full text-xs font-bold text-slate-400 hover:text-slate-600 py-2">
+          បោះបង់
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 3: QUIZ ARENA ==================== -->
+    <section id="quizArena" class="hidden bg-white rounded-2xl shadow-lg border border-slate-200 p-4 md:p-6">
+      
+      <!-- Quiz Header -->
+      <div class="flex justify-between items-center border-b pb-4 mb-4 gap-2">
+        <div>
+          <span id="quizDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"></span>
+          <h3 id="quizTopicTitle" class="font-bold text-slate-800 text-sm md:text-base mt-1"></h3>
+        </div>
+        <button onclick="quitQuiz()" class="text-xs text-slate-400 hover:text-red-500 font-semibold border px-3 py-1.5 rounded-lg">
+          ចាកចេញ
+        </button>
+      </div>
+
+      <!-- Progress & Stats Bar -->
+      <div class="grid grid-cols-3 gap-2 md:gap-4 text-center mb-6 bg-slate-50 p-3 rounded-xl border">
+        <div>
+          <p class="text-[10px] md:text-xs text-slate-400">សំណួរ</p>
+          <p class="text-base md:text-lg font-bold text-slate-700"><span id="qCurrentNum">1</span> / 20</p>
+        </div>
+        <div>
+          <p class="text-[10px] md:text-xs text-slate-400">ពិន្ទុបាន</p>
+          <p class="text-base md:text-lg font-bold text-emerald-600" id="qCurrentScore">0</p>
+        </div>
+        <div>
+          <p class="text-[10px] md:text-xs text-slate-400">ភាគរយត្រូវ</p>
+          <p class="text-base md:text-lg font-bold text-indigo-600" id="qAccuracy">100%</p>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-6 md:p-8 text-center mb-6 min-h-[140px] flex flex-col justify-center items-center">
+        <p class="text-xs font-bold text-indigo-500 mb-2">សំណួរទី <span id="qDisplayIndex">1</span></p>
+        <h2 id="qText" class="text-xl md:text-2xl font-extrabold text-slate-800 leading-relaxed"></h2>
+      </div>
+
+      <!-- Answer Options Grid -->
+      <div id="qOptionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Generated Dynamically -->
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 4: QUIZ RESULT SCREEN ==================== -->
+    <section id="resultSection" class="hidden bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-slate-200 text-center max-w-lg mx-auto">
+      <div class="text-6xl mb-3">🏆</div>
+      <h2 class="text-2xl font-extrabold text-slate-800 mb-1">ធ្វើរួចរាល់ហើយ!</h2>
+      <p id="resultTopicName" class="text-xs font-bold text-indigo-600 mb-6"></p>
+
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 mb-6">
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-slate-500">ពិន្ទទទួលបាន៖</span>
+          <span class="font-bold text-slate-800 text-base" id="resFinalScore">0 / 20</span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-slate-500">អត្រាត្រឹមត្រូវ (Accuracy)៖</span>
+          <span class="font-bold text-emerald-600 text-base" id="resAccuracy">0%</span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-slate-500">កម្រិតប្រកួត៖</span>
+          <span class="font-bold text-amber-600 text-xs" id="resDiff"></span>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="restartCurrentQuiz()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl transition text-sm">
+          🔄 ធ្វើឡើងវិញ
+        </button>
+        <button onclick="showStudentDashboard()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition text-sm">
+          📚 តារាងចំណុច
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 5: STUDENT HISTORY VIEW ==================== -->
+    <section id="studentHistorySection" class="hidden bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+      <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-800">📜 ប្រវត្តិការធ្វើលំហាត់របស់ខ្ញុំ</h2>
+          <p class="text-xs text-slate-400">រាល់កំណត់ត្រាពិន្ទុដែលបានធ្វើកន្លងមក</p>
+        </div>
+        <button onclick="showStudentDashboard()" class="text-xs font-bold text-indigo-600 border px-3 py-2 rounded-xl hover:bg-indigo-50">
+          ← ត្រឡប់ក្រោយ
+        </button>
+      </div>
+
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left text-xs md:text-sm">
+          <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] md:text-xs">
+            <tr>
+              <th class="p-3 rounded-l-lg">កាលបរិច្ឆេទ</th>
+              <th class="p-3">ចំណុចលំហាត់</th>
+              <th class="p-3 text-center">កម្រិត</th>
+              <th class="p-3 text-center">ពិន្ទុ (២០)</th>
+              <th class="p-3 text-center rounded-r-lg">ភាគរយ</th>
+            </tr>
+          </thead>
+          <tbody id="studentHistoryBody" class="divide-y text-slate-700">
+            <!-- Dynamic Content -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 6: TEACHER DASHBOARD ==================== -->
+    <section id="teacherDashboard" class="hidden space-y-6">
+      
+      <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 border-b pb-4">
+          <div>
+            <h2 class="text-xl font-bold text-purple-900">🧑‍🏫 ផ្ទាំងគ្រប់គ្រងទិន្នន័យសិស្ស</h2>
+            <p class="text-xs text-slate-500">បង្ហាញទិន្នន័យសិស្សក្នុងសាលារៀន៖ <span id="teacherSchoolName" class="font-bold text-indigo-600"></span></p>
+          </div>
+          
+          <!-- School Filter Stats -->
+          <div class="flex items-center gap-3">
+            <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 text-center">
+              <p class="text-[10px] text-purple-600 font-bold uppercase">សិស្សសរុប</p>
+              <p class="text-lg font-bold text-purple-900" id="totalSchoolStudents">0</p>
+            </div>
+            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-center">
+              <p class="text-[10px] text-emerald-600 font-bold uppercase">លំហាត់ធ្វើរួច</p>
+              <p class="text-lg font-bold text-emerald-900" id="totalSchoolTests">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Records Table -->
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead class="bg-purple-50 text-purple-900 uppercase text-[10px] md:text-xs">
+              <tr>
+                <th class="p-3 rounded-l-lg">ឈ្មោះសិស្ស</th>
+                <th class="p-3">ភេទ</th>
+                <th class="p-3">ថ្នាក់ទី</th>
+                <th class="p-3">ចំណុចបានធ្វើ</th>
+                <th class="p-3 text-center">ពិន្ទុមធ្យម</th>
+                <th class="p-3 text-center rounded-r-lg">អត្រាត្រូវ (%)</th>
+              </tr>
+            </thead>
+            <tbody id="teacherTableBody" class="divide-y text-slate-700">
+              <!-- Dynamic Content -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 py-4 bg-slate-200 text-center text-xs text-slate-500">
+    <p>កម្មវិធីសិក្សាគណិតវិទ្យាថ្នាក់ទី៤ - មេរៀនទី១ ៖ ចំនួន © ២០២៦</p>
+  </footer>
+
+  <!-- JS LOGIC -->
+  <script>
+    // -------------------------------------------------------------
+    // DATA STRUCTURE & TOPICS DEFINITION (LESSON 1: 10 TOPICS)
+    // -------------------------------------------------------------
+    const TOPICS = [
+      { id: 1, title: "១. ការអានចំនួន", desc: "អានចំនួនជាអក្សរខ្មែរ (ឧ. 23 045 -> ពីរម៉ឺនបីពាន់សែសិបប្រាំ)" },
+      { id: 2, title: "២. ការបំពេញចំនួន", desc: "ជ្រើសរើសចម្លើយជាចំនួន (ឧ. ពីរម៉ឺនបីពាន់... -> 23 565)" },
+      { id: 3, title: "៣. ការបំពេញលំនាំ", desc: "រកចំនួនក្នុងចន្លោះលំនាំ (ឧ. 10000, 20000, ..., 40000)" },
+      { id: 4, title: "៤. ការប្រាប់ខ្ទង់", desc: "ប្រាប់ខ្ទង់នៃលេខ (រាយ, ដប់, រយ, ពាន់, ម៉ឺន, សែន)" },
+      { id: 5, title: "៥. តម្លៃលេខតាមខ្ទង់", desc: "រកតម្លៃលេខតាមខ្ទង់ (ឧ. 12345 លេខ1មានតម្លៃ 10000)" },
+      { id: 6, title: "៦. ទម្រង់ពង្រាយ", desc: "បំបែកចំនួនជាទម្រង់ពង្រាយ (ឧ. 12345=10000+2000+...)" },
+      { id: 7, title: "៧. ប្រៀបធៀបចំនួន", desc: "ប្រៀបធៀបដោយប្រើសញ្ញា (> , < , =)" },
+      { id: 8, title: "៨. ការរៀបលំដាប់ចំនួន", desc: "រៀបលំដាប់ចំនួនពីតូចទៅធំ ឬពីធំទៅតូច" },
+      { id: 9, title: "៩. បង្កើតចំនួនធំបំផុត/តូចបំផុត", desc: "បង្កើតចំនួនធំបំផុត ឬតូចបំផុតពីលេខដែលឱ្យ" },
+      { id: 10, title: "១០. ការបង្គត់ចំនួន", desc: "បង្គត់ចំនួនត្រឹមខ្ទង់ដប់, រយ, ពាន់, ម៉ឺន" }
+    ];
+
+    // Global State Variables
+    let currentUser = null;
+    let selectedRole = null;
+    let activeTopic = null;
+    let activeDifficulty = null;
+    let currentQuizQuestions = [];
+    let currentQuestionIndex = 0;
+    let currentScore = 0;
+
+    // Helper: Khmer Khmer Number Words Converter
+    const khmerDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+    const onesWords = ['', 'មួយ', 'ពីរ', 'បី', 'បួន', 'ប្រាំ', 'ប្រាំមួយ', 'ប្រាំពីរ', 'ប្រាំបី', 'ប្រាំបួន'];
+    const tensWords = ['', 'ដប់', 'ម្ភៃ', 'សាមសិប', 'សែសិប', 'ហាសិប', 'ហុកសិប', 'ចិត្តសិប', 'ប៉ែតសិប', 'កៅសិប'];
+
+    function numberToKhmerText(num) {
+      if (num === 0) return 'សូន្យ';
+      let str = '';
+      let lakh = Math.floor(num / 100000);
+      let rem1 = num % 100000;
+      let tenThous = Math.floor(rem1 / 10000);
+      let rem2 = rem1 % 10000;
+      let thous = Math.floor(rem2 / 1000);
+      let rem3 = rem2 % 1000;
+      let hund = Math.floor(rem3 / 100);
+      let rem4 = rem3 % 100;
+      let ten = Math.floor(rem4 / 10);
+      let one = rem4 % 10;
+
+      if (lakh > 0) str += onesWords[lakh] + 'សែន';
+      if (tenThous > 0) str += onesWords[tenThous] + 'ម៉ឺន';
+      if (thous > 0) str += onesWords[thous] + 'ពាន់';
+      if (hund > 0) str += onesWords[hund] + 'រយ';
+      if (ten > 0) str += tensWords[ten];
+      if (one > 0) str += onesWords[one];
+
+      return str;
+    }
+
+    function toKhmerNumStr(num) {
+      return num.toString().split('').map(d => khmerDigits[parseInt(d)] || d).join('');
+    }
+
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // -------------------------------------------------------------
+    // LOCAL STORAGE HANDLING
+    // -------------------------------------------------------------
+    function getStoredUsers() {
+      return JSON.parse(localStorage.getItem('m4_lesson1_users') || '[]');
+    }
+
+    function saveUserToStorage(user) {
+      const users = getStoredUsers();
+      const existingIdx = users.findIndex(u => u.name === user.name && u.school === user.school && u.role === user.role);
+      if (existingIdx >= 0) {
+        users[existingIdx] = user;
+      } else {
+        users.push(user);
+      }
+      localStorage.setItem('m4_lesson1_users', JSON.stringify(users));
+    }
+
+    function getStoredScores() {
+      return JSON.parse(localStorage.getItem('m4_lesson1_scores') || '[]');
+    }
+
+    function saveScoreToStorage(scoreRecord) {
+      const scores = getStoredScores();
+      scores.push(scoreRecord);
+      localStorage.setItem('m4_lesson1_scores', JSON.stringify(scores));
+    }
+
+    // -------------------------------------------------------------
+    // AUTH & NAVIGATION LOGIC
+    // -------------------------------------------------------------
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('roleCard').classList.add('hidden');
+      document.getElementById('regCard').classList.remove('hidden');
+
+      const title = document.getElementById('regTitle');
+      const phoneField = document.getElementById('phoneField');
+
+      if (role === 'student') {
+        title.innerText = '🧑‍🎓 ចុះឈ្មោះសម្រាប់សិស្ស';
+        phoneField.classList.add('hidden');
+        document.getElementById('regPhone').required = false;
+      } else {
+        title.innerText = '🧑‍🏫 ចុះឈ្មោះសម្រាប់គ្រូបង្រៀន';
+        phoneField.classList.remove('hidden');
+        document.getElementById('regPhone').required = true;
+      }
+    }
+
+    function backToRoleSelect() {
+      document.getElementById('regCard').classList.add('hidden');
+      document.getElementById('roleCard').classList.remove('hidden');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      currentUser = {
+        name: document.getElementById('regName').value.trim(),
+        gender: document.getElementById('regGender').value,
+        grade: document.getElementById('regGrade').value,
+        school: document.getElementById('regSchool').value.trim(),
+        role: selectedRole,
+        phone: selectedRole === 'teacher' ? document.getElementById('regPhone').value.trim() : ''
+      };
+
+      saveUserToStorage(currentUser);
+      updateHeaderUI();
+
+      if (currentUser.role === 'student') {
+        showStudentDashboard();
+      } else {
+        showTeacherDashboard();
+      }
+    }
+
+    function updateHeaderUI() {
+      document.getElementById('authSection').classList.add('hidden');
+      const headerInfo = document.getElementById('headerUserInfo');
+      headerInfo.classList.remove('hidden');
+      document.getElementById('navUserName').innerText = currentUser.name;
+      document.getElementById('navUserRole').innerText = `${currentUser.role === 'student' ? 'សិស្ស' : 'គ្រូបង្រៀន'} (${currentUser.grade} - ${currentUser.school})`;
+    }
+
+    function logout() {
+      currentUser = null;
+      document.getElementById('headerUserInfo').classList.add('hidden');
+      ['studentDashboard', 'teacherDashboard', 'quizArena', 'resultSection', 'studentHistorySection'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById('authSection').classList.remove('hidden');
+      document.getElementById('regCard').classList.add('hidden');
+      document.getElementById('roleCard').classList.remove('hidden');
+    }
+
+    // -------------------------------------------------------------
+    // STUDENT DASHBOARD & TOPICS RENDER
+    // -------------------------------------------------------------
+    function showStudentDashboard() {
+      hideAllSections();
+      document.getElementById('studentDashboard').classList.remove('hidden');
+      renderTopics();
+    }
+
+    function renderTopics() {
+      const grid = document.getElementById('topicsGrid');
+      grid.innerHTML = '';
+
+      TOPICS.forEach(topic => {
+        const card = document.createElement('div');
+        card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <span class="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">២០ លំហាត់</span>
+            <h3 class="font-bold text-slate-800 text-base mt-2 mb-1">${topic.title}</h3>
+            <p class="text-xs text-slate-500 mb-4">${topic.desc}</p>
+          </div>
+          <button onclick="openDiffModal(${topic.id})" class="w-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 font-bold py-2.5 rounded-xl text-xs transition border border-indigo-200 hover:border-transparent">
+            ជ្រើសរើសធ្វើលំហាត់
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openDiffModal(topicId) {
+      activeTopic = TOPICS.find(t => t.id === topicId);
+      document.getElementById('modalTopicTitle').innerText = activeTopic.title;
+      document.getElementById('diffModal').classList.remove('hidden');
+    }
+
+    function closeDiffModal() {
+      document.getElementById('diffModal').classList.add('hidden');
+    }
+
+    // -------------------------------------------------------------
+    // DYNAMIC QUESTION GENERATORS (TOPICS 1 - 10)
+    // -------------------------------------------------------------
+    function generateTopicQuestions(topicId, difficulty) {
+      const questions = [];
+      let min = 1000, max = 9999;
+      if (difficulty === 'medium') { min = 10000; max = 50000; }
+      if (difficulty === 'hard') { min = 50000; max = 99999; }
+
+      for (let i = 0; i < 20; i++) {
+        let qText = '', answer = '', options = [];
+        const num = randInt(min, max);
+
+        switch(topicId) {
+          // ១. ការអានចំនួន
+          case 1: {
+            qText = `តើចំនួន ${num.toLocaleString()} អានជាអក្សរខ្មែរយ៉ាងដូចម្តេច?`;
+            answer = numberToKhmerText(num);
+            options = [answer];
+            while (options.length < 4) {
+              let wrongNum = num + randInt(-5, 5) * 10;
+              if (wrongNum > 0 && wrongNum !== num) {
+                let wrongText = numberToKhmerText(wrongNum);
+                if (!options.includes(wrongText)) options.push(wrongText);
+              }
+            }
+            break;
+          }
+
+          // ២. ការបំពេញចំនួន
+          case 2: {
+            let text = numberToKhmerText(num);
+            qText = `តើ «${text}» ត្រូវនឹងចំនួនណា?`;
+            answer = num.toLocaleString();
+            options = [answer];
+            while (options.length < 4) {
+              let wrong = num + randInt(-5, 5) * 100;
+              if (wrong > 0 && wrong !== num) {
+                let wrongStr = wrong.toLocaleString();
+                if (!options.includes(wrongStr)) options.push(wrongStr);
+              }
+            }
+            break;
+          }
+
+          // ៣. ការបំពេញលំនាំ
+          case 3: {
+            let step = difficulty === 'easy' ? 1000 : (difficulty === 'medium' ? 2500 : 5000);
+            let start = randInt(1, 5) * step;
+            let seq = [start, start + step, start + step * 2, start + step * 3, start + step * 4];
+            let blankIdx = randInt(1, 3);
+            answer = seq[blankIdx].toLocaleString();
+            seq[blankIdx] = '...';
+            qText = `រកចំនួនបំពេញក្នុងលំនាំ៖ ${seq.map(n => typeof n === 'number' ? n.toLocaleString() : n).join(', ')}`;
+            options = [answer];
+            while (options.length < 4) {
+              let wrong = (parseInt(answer.replace(/,/g, '')) + randInt(-2, 2) * step);
+              if (wrong > 0 && wrong.toLocaleString() !== answer && !options.includes(wrong.toLocaleString())) {
+                options.push(wrong.toLocaleString());
+              }
+            }
+            break;
+          }
+
+          // ៤. ការប្រាប់ខ្ទង់
+          case 4: {
+            const places = [
+              { name: 'រាយ', val: 1 },
+              { name: 'ដប់', val: 10 },
+              { name: 'រយ', val: 100 },
+              { name: 'ពាន់', val: 1000 },
+              { name: 'ម៉ឺន', val: 10000 }
+            ];
+            let numStr = num.toString();
+            let randPos = randInt(0, numStr.length - 1);
+            let targetDigit = numStr[randPos];
+            let actualPlaceIdx = numStr.length - 1 - randPos;
+            let actualPlaceName = places[actualPlaceIdx] ? places[actualPlaceIdx].name : 'ម៉ឺន';
+
+            qText = `ក្នុងចំនួន ${num.toLocaleString()} លេខ ${targetDigit} ស្ថិតនៅខ្ទង់ណា?`;
+            answer = actualPlaceName;
+            options = ['រាយ', 'ដប់', 'រយ', 'ពាន់', 'ម៉ឺន'].slice(0, 4);
+            if (!options.includes(answer)) options[0] = answer;
+            break;
+          }
+
+          // ៥. តម្លៃលេខតាមខ្ទង់
+          case 5: {
+            let numStr = num.toString();
+            let randPos = randInt(0, numStr.length - 1);
+            let targetDigit = parseInt(numStr[randPos]);
+            let placeMultiplier = Math.pow(10, numStr.length - 1 - randPos);
+            let val = targetDigit * placeMultiplier;
+
+            qText = `ក្នុងចំនួន ${num.toLocaleString()} លេខ ${targetDigit} មានតម្លៃស្មើប៉ុន្មាន?`;
+            answer = val.toLocaleString();
+            options = [answer];
+            while (options.length < 4) {
+              let wrong = targetDigit * Math.pow(10, randInt(0, 4));
+              if (wrong !== val && !options.includes(wrong.toLocaleString())) {
+                options.push(wrong.toLocaleString());
+              }
+            }
+            break;
+          }
+
+          // ៦. ទម្រង់ពង្រាយ
+          case 6: {
+            let numStr = num.toString();
+            let parts = [];
+            for (let p = 0; p < numStr.length; p++) {
+              let d = parseInt(numStr[p]);
+              if (d > 0) {
+                parts.push((d * Math.pow(10, numStr.length - 1 - p)).toLocaleString());
+              }
+            }
+            qText = `តើចំនួន ${num.toLocaleString()} មានទម្រង់ពង្រាយដូចម្តេច?`;
+            answer = parts.join(' + ');
+            options = [answer];
+
+            while (options.length < 4) {
+              let fakeParts = parts.map((pt, idx) => idx === 0 ? pt : (parseInt(pt.replace(/,/g, '')) + 10).toLocaleString());
+              let fakeAns = fakeParts.join(' + ');
+              if (!options.includes(fakeAns)) options.push(fakeAns);
+            }
+            break;
+          }
+
+          // ៧. ប្រៀបធៀបចំនួន
+          case 7: {
+            let n1 = num;
+            let n2 = num + randInt(-2, 2) * (difficulty === 'easy' ? 10 : 100);
+            if (n1 === n2) {
+              answer = '=';
+            } else if (n1 > n2) {
+              answer = '>';
+            } else {
+              answer = '<';
+            }
+            qText = `ជ្រើសរើសសញ្ញាប្រៀបធៀបត្រឹមត្រូវ៖ ${n1.toLocaleString()}  ______  ${n2.toLocaleString()}`;
+            options = ['>', '<', '='];
+            break;
+          }
+
+          // ៨. ការរៀបលំដាប់ចំនួន
+          case 8: {
+            let base = randInt(min, max);
+            let list = [base, base + 120, base - 50, base + 300].sort(() => Math.random() - 0.5);
+            let sortedAsc = [...list].sort((a, b) => a - b).map(n => n.toLocaleString()).join(', ');
+            
+            qText = `ជ្រើសរើសការរៀបលំដាប់ពី «តូច ទៅ ធំ» នៃចំនួន៖ ${list.map(n => n.toLocaleString()).join(', ')}`;
+            answer = sortedAsc;
+            options = [answer];
+
+            while (options.length < 4) {
+              let wrongList = [...list].sort(() => Math.random() - 0.5).map(n => n.toLocaleString()).join(', ');
+              if (!options.includes(wrongList)) options.push(wrongList);
+            }
+            break;
+          }
+
+          // ៩. បង្កើតចំនួនធំបំផុត ឬតូចបំផុត
+          case 9: {
+            let digits = [randInt(1, 9), randInt(1, 9), randInt(0, 9), randInt(1, 9)];
+            let isMax = Math.random() > 0.5;
+            let sorted = isMax ? [...digits].sort((a, b) => b - a) : [...digits].sort((a, b) => a - b);
+            
+            // avoid zero at front for min
+            if (!isMax && sorted[0] === 0) {
+              sorted[0] = sorted[1];
+              sorted[1] = 0;
+            }
+
+            qText = `បង្កើតចំនួន «${isMax ? 'ធំបំផុត' : 'តូចបំផុត'}» ដោយប្រើលេខ៖ ${digits.join(', ')}`;
+            answer = parseInt(sorted.join('')).toLocaleString();
+            options = [answer];
+
+            while (options.length < 4) {
+              let wrongDigits = [...digits].sort(() => Math.random() - 0.5);
+              let wrongVal = parseInt(wrongDigits.join('')).toLocaleString();
+              if (!options.includes(wrongVal)) options.push(wrongVal);
+            }
+            break;
+          }
+
+          // ១០. ការបង្គត់ចំនួន
+          case 10: {
+            const places = [
+              { name: 'ដប់', val: 10 },
+              { name: 'រយ', val: 100 },
+              { name: 'ពាន់', val: 1000 }
+            ];
+            let p = places[randInt(0, places.length - 1)];
+            let rounded = Math.round(num / p.val) * p.val;
+
+            qText = `បង្គត់ចំនួន ${num.toLocaleString()} ត្រឹម «ខ្ទង់${p.name}» ៖`;
+            answer = rounded.toLocaleString();
+            options = [answer];
+
+            while (options.length < 4) {
+              let wrong = rounded + randInt(-2, 2) * p.val;
+              if (wrong > 0 && wrong.toLocaleString() !== answer && !options.includes(wrong.toLocaleString())) {
+                options.push(wrong.toLocaleString());
+              }
+            }
+            break;
+          }
+        }
+
+        // Shuffle Options
+        options = options.sort(() => Math.random() - 0.5);
+        questions.push({ qText, answer, options });
+      }
+
+      return questions;
+    }
+
+    // -------------------------------------------------------------
+    // QUIZ GAME ENGINE
+    // -------------------------------------------------------------
+    function startQuiz(difficulty) {
+      closeDiffModal();
+      activeDifficulty = difficulty;
+      currentQuizQuestions = generateTopicQuestions(activeTopic.id, difficulty);
+      currentQuestionIndex = 0;
+      currentScore = 0;
+
+      hideAllSections();
+      document.getElementById('quizArena').classList.remove('hidden');
+
+      // Update Header Info
+      document.getElementById('quizTopicTitle').innerText = activeTopic.title;
+      const badge = document.getElementById('quizDiffBadge');
+      if (difficulty === 'easy') {
+        badge.innerText = 'ងាយស្រួល';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-emerald-100 text-emerald-700';
+      } else if (difficulty === 'medium') {
+        badge.innerText = 'មធ្យម';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-amber-100 text-amber-700';
+      } else {
+        badge.innerText = 'លំបាក';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-rose-100 text-rose-700';
+      }
+
+      renderCurrentQuestion();
+    }
+
+    function renderCurrentQuestion() {
+      if (currentQuestionIndex >= 20) {
+        finishQuiz();
+        return;
+      }
+
+      const q = currentQuizQuestions[currentQuestionIndex];
+      document.getElementById('qCurrentNum').innerText = currentQuestionIndex + 1;
+      document.getElementById('qDisplayIndex').innerText = currentQuestionIndex + 1;
+      document.getElementById('qCurrentScore').innerText = currentScore;
+      
+      const acc = currentQuestionIndex === 0 ? 100 : Math.round((currentScore / currentQuestionIndex) * 100);
+      document.getElementById('qAccuracy').innerText = `${acc}%`;
+      
+      document.getElementById('qText').innerText = q.qText;
+
+      const grid = document.getElementById('qOptionsGrid');
+      grid.innerHTML = '';
+
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "p-4 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-400 font-bold rounded-xl text-sm md:text-base text-slate-700 transition flex items-center justify-center text-center leading-relaxed";
+        btn.innerText = opt;
+        btn.onclick = () => handleAnswerSelect(opt);
+        grid.appendChild(btn);
+      });
+    }
+
+    function handleAnswerSelect(selectedOpt) {
+      const q = currentQuizQuestions[currentQuestionIndex];
+      if (selectedOpt === q.answer) {
+        currentScore++;
+      }
+      currentQuestionIndex++;
+      renderCurrentQuestion();
+    }
+
+    function quitQuiz() {
+      if (confirm('តើអ្នកពិតជាចង់ចាកចេញពីការធ្វើលំហាត់នេះមែនទេ?')) {
+        showStudentDashboard();
+      }
+    }
+
+    function finishQuiz() {
+      const accuracy = Math.round((currentScore / 20) * 100);
+
+      // Save to localStorage
+      saveScoreToStorage({
+        studentName: currentUser.name,
+        gender: currentUser.gender,
+        grade: currentUser.grade,
+        school: currentUser.school,
+        topicId: activeTopic.id,
+        topicTitle: activeTopic.title,
+        difficulty: activeDifficulty,
+        score: currentScore,
+        accuracy: accuracy,
+        date: new Date().toLocaleDateString('km-KH')
+      });
+
+      hideAllSections();
+      document.getElementById('resultSection').classList.remove('hidden');
+
+      document.getElementById('resultTopicName').innerText = activeTopic.title;
+      document.getElementById('resFinalScore').innerText = `${currentScore} / 20`;
+      document.getElementById('resAccuracy').innerText = `${accuracy}%`;
+      document.getElementById('resDiff').innerText = activeDifficulty === 'easy' ? 'ងាយស្រួល' : (activeDifficulty === 'medium' ? 'មធ្យម' : 'លំបាក');
+    }
+
+    function restartCurrentQuiz() {
+      startQuiz(activeDifficulty);
+    }
+
+    // -------------------------------------------------------------
+    // STUDENT HISTORY VIEW
+    // -------------------------------------------------------------
+    function showStudentHistory() {
+      hideAllSections();
+      document.getElementById('studentHistorySection').classList.remove('hidden');
+
+      const allScores = getStoredScores();
+      const myScores = allScores.filter(s => s.studentName === currentUser.name && s.school === currentUser.school);
+
+      const tbody = document.getElementById('studentHistoryBody');
+      tbody.innerHTML = '';
+
+      if (myScores.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">អ្នកមិនទាន់បានធ្វើលំហាត់នៅឡើយទេ</td></tr>`;
+        return;
+      }
+
+      myScores.reverse().forEach(s => {
+        const row = document.createElement('tr');
+        row.className = "hover:bg-slate-50";
+        row.innerHTML = `
+          <td class="p-3 text-slate-500">${s.date}</td>
+          <td class="p-3 font-bold text-slate-800">${s.topicTitle}</td>
+          <td class="p-3 text-center"><span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${s.difficulty==='easy'?'bg-emerald-100 text-emerald-700':s.difficulty==='medium'?'bg-amber-100 text-amber-700':'bg-rose-100 text-rose-700'}">${s.difficulty}</span></td>
+          <td class="p-3 text-center font-bold text-indigo-600">${s.score}</td>
+          <td class="p-3 text-center font-bold text-emerald-600">${s.accuracy}%</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // -------------------------------------------------------------
+    // TEACHER DASHBOARD VIEW (FILTERED BY SCHOOL)
+    // -------------------------------------------------------------
+    function showTeacherDashboard() {
+      hideAllSections();
+      document.getElementById('teacherDashboard').classList.remove('hidden');
+
+      document.getElementById('teacherSchoolName').innerText = currentUser.school;
+
+      const allUsers = getStoredUsers().filter(u => u.role === 'student' && u.school === currentUser.school);
+      const allScores = getStoredScores().filter(s => s.school === currentUser.school);
+
+      document.getElementById('totalSchoolStudents').innerText = allUsers.length;
+      document.getElementById('totalSchoolTests').innerText = allScores.length;
+
+      const tbody = document.getElementById('teacherTableBody');
+      tbody.innerHTML = '';
+
+      if (allUsers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">មិនទាន់មានសិស្សចុះឈ្មោះក្នុងសាលានេះនៅឡើយទេ</td></tr>`;
+        return;
+      }
+
+      allUsers.forEach(st => {
+        const stScores = allScores.filter(s => s.studentName === st.name);
+        const testsDone = stScores.length;
+        const avgScore = testsDone > 0 ? (stScores.reduce((acc, curr) => acc + curr.score, 0) / testsDone).toFixed(1) : 0;
+        const avgAcc = testsDone > 0 ? Math.round(stScores.reduce((acc, curr) => acc + curr.accuracy, 0) / testsDone) : 0;
+
+        const row = document.createElement('tr');
+        row.className = "hover:bg-slate-50";
+        row.innerHTML = `
+          <td class="p-3 font-bold text-slate-800">${st.name}</td>
+          <td class="p-3 text-slate-600">${st.gender}</td>
+          <td class="p-3 text-slate-600">${st.grade}</td>
+          <td class="p-3 font-semibold text-indigo-600">${testsDone} លើក</td>
+          <td class="p-3 text-center font-bold text-amber-600">${avgScore} / 20</td>
+          <td class="p-3 text-center font-bold text-emerald-600">${avgAcc}%</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // -------------------------------------------------------------
+    // UTILITY FUNCTIONS
+    // -------------------------------------------------------------
+    function hideAllSections() {
+      ['authSection', 'studentDashboard', 'quizArena', 'resultSection', 'studentHistorySection', 'teacherDashboard'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+    }
+  </script>
+</body>
+</html>
