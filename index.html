@@ -1,1091 +1,1343 @@
 <!DOCTYPE html>
 <html lang="km">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>កម្មវិធីសិក្សាគណិតវិទ្យា ថ្នាក់ទី៤ - មេរៀនទី១</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&family=Moul&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Kantumruy Pro', sans-serif;
-            background-color: #f3f4f6;
-        }
-        .font-moul {
-            font-family: 'Moul', cursive;
-        }
-        .modal-bg {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>គណិតវិទ្យាថ្នាក់ទី៤ - មេរៀនទី១៖ ចំនួន</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Kantumruy Pro', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex flex-col justify-between text-slate-800">
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
 
-    <!-- Header / Navbar -->
-    <header class="bg-indigo-700 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <span class="text-2xl font-moul text-yellow-300">គណិតវិទ្យា ថ្នាក់ទី៤</span>
-                <span class="bg-indigo-900 text-xs px-2 py-1 rounded text-indigo-200">មេរៀនទី១៖ ចំនួន</span>
-            </div>
-            <div id="nav-user-info" class="hidden flex items-center space-x-4">
-                <span id="user-badge" class="bg-yellow-400 text-indigo-950 px-3 py-1 rounded-full text-xs font-bold"></span>
-                <button onclick="editProfile()" class="text-sm bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded transition">កែប្រែគណនី</button>
-                <button onclick="logout()" class="text-sm bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition">ចាកចេញ</button>
-            </div>
+  <!-- MAIN CONTAINER -->
+  <div id="app" class="max-w-6xl mx-auto p-3 md:p-6 w-full">
+    
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white rounded-2xl p-4 md:p-6 shadow-xl mb-6 flex justify-between items-center flex-wrap gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+          <svg class="w-8 h-8 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
         </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold">គណិតវិទ្យាថ្នាក់ទី៤</h1>
+          <p class="text-blue-100 text-xs md:text-sm">មេរៀនទី១ ៖ ចំនួន (ប្រព័ន្ធគ្រប់គ្រងសាលារៀន)</p>
+        </div>
+      </div>
+
+      <!-- User Nav Info -->
+      <div id="headerUserInfo" class="hidden flex items-center gap-3 bg-white/10 px-4 py-2 rounded-xl backdrop-blur-md border border-white/20">
+        <div class="text-right">
+          <p id="navUserName" class="font-bold text-yellow-300 text-sm md:text-base"></p>
+          <p id="navUserRole" class="text-xs text-blue-100"></p>
+        </div>
+        <div class="flex gap-1">
+          <button onclick="openProfileModal()" title="គណនីផ្ទាល់ខ្លួន" class="bg-indigo-500/80 hover:bg-indigo-600 p-2 rounded-lg text-white transition">
+            ⚙️
+          </button>
+          <button onclick="logout()" title="ចាកចេញ" class="bg-red-500/80 hover:bg-red-600 p-2 rounded-lg text-white transition">
+            🚪
+          </button>
+        </div>
+      </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto w-full p-4 flex-grow">
-
-        <!-- 1. LANDING & ROLE SELECTION -->
-        <section id="sec-role-select" class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl mt-8 text-center border border-indigo-100">
-            <h1 class="text-2xl font-moul text-indigo-800 mb-2">ស្វាគមន៍មកកាន់ប្រព័ន្ធសិក្សា</h1>
-            <p class="text-gray-600 mb-6 text-sm">សូមជ្រើសរើសតួនាទីរបស់អ្នកដើម្បីចូលប្រើប្រាស់</p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <button onclick="selectRole('student')" class="p-6 bg-indigo-50 border-2 border-indigo-200 hover:border-indigo-600 rounded-xl flex flex-col items-center group transition">
-                    <span class="text-4xl mb-2 group-hover:scale-110 transition">🎓</span>
-                    <span class="font-bold text-indigo-900">សិស្ស</span>
-                </button>
-                <button onclick="selectRole('teacher')" class="p-6 bg-emerald-50 border-2 border-emerald-200 hover:border-emerald-600 rounded-xl flex flex-col items-center group transition">
-                    <span class="text-4xl mb-2 group-hover:scale-110 transition">👨‍🏫</span>
-                    <span class="font-bold text-emerald-900">គ្រូបង្រៀន</span>
-                </button>
-                <button onclick="selectRole('admin')" class="p-6 bg-amber-50 border-2 border-amber-200 hover:border-amber-600 rounded-xl flex flex-col items-center group transition">
-                    <span class="text-4xl mb-2 group-hover:scale-110 transition">🛡️</span>
-                    <span class="font-bold text-amber-900">អ្នកគ្រប់គ្រង</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- 2. LOGIN / REGISTER FORM CONTAINER -->
-        <section id="sec-auth" class="hidden max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-xl mt-6 border border-slate-200">
-            <button onclick="backToRoleSelect()" class="text-sm text-indigo-600 hover:underline mb-4">← ត្រឡប់ទៅជ្រើសរើសតួនាទី</button>
-            <h2 id="auth-title" class="text-xl font-bold text-center text-slate-800 mb-4"></h2>
-
-            <!-- Login Form -->
-            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">ឈ្មោះគណនី (Username)</label>
-                    <input type="text" id="login-username" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="ជាអក្សរអង់គ្លេស ឬលេខ">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">ពាក្យសម្ងាត់ (Password)</label>
-                    <input type="password" id="login-password" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="ជាលេខ">
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">ចូលប្រព័ន្ធ</button>
-                
-                <div class="flex justify-between items-center text-sm pt-2">
-                    <button type="button" onclick="showRegisterForm()" class="text-indigo-600 hover:underline">ចុះឈ្មោះគណនីថ្មី</button>
-                    <button type="button" onclick="showForgotModal()" class="text-red-500 hover:underline">ភ្លេចគណនី?</button>
-                </div>
-            </form>
-
-            <!-- Register Form -->
-            <form id="form-register" onsubmit="handleRegister(event)" class="hidden space-y-3">
-                <div id="reg-fields-common">
-                    <label class="block text-sm font-semibold text-gray-700">ឈ្មោះពេញ</label>
-                    <input type="text" id="reg-fullname" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="ឈ្មោះសិស្ស / គ្រូ / អ្នកគ្រប់គ្រង">
-                </div>
-                
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">ភេទ</label>
-                        <select id="reg-gender" class="w-full mt-1 p-2 border rounded-lg text-sm">
-                            <option value="ប្រុស">ប្រុស</option>
-                            <option value="ស្រី">ស្រី</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">ថ្នាក់ទី</label>
-                        <input type="text" id="reg-grade" value="ថ្នាក់ទី៤" required class="w-full mt-1 p-2 border rounded-lg text-sm">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">សាលារៀន</label>
-                    <input type="text" id="reg-school" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="ឧ. សាលាបឋមសិក្សា ព្រែកសង្កែ">
-                </div>
-
-                <!-- Teacher Extra Fields -->
-                <div id="reg-teacher-extra" class="hidden space-y-3">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">លេខទូរសព្ទ Telegram</label>
-                        <input type="tel" id="reg-phone" class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="012345678">
-                    </div>
-                </div>
-
-                <!-- Admin Extra Fields -->
-                <div id="reg-admin-extra" class="hidden space-y-3">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">លេខទូរសព្ទ Telegram</label>
-                        <input type="tel" id="reg-admin-phone" class="w-full mt-1 p-2 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Username Telegram</label>
-                        <input type="text" id="reg-admin-tguser" class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="@username">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">រូបថត QR Code Telegram</label>
-                        <input type="file" id="reg-admin-qr" accept="image/*" class="w-full mt-1 text-sm">
-                    </div>
-                </div>
-
-                <hr class="my-3">
-                <div class="bg-indigo-50 p-3 rounded-lg space-y-2">
-                    <div class="flex justify-between items-center">
-                        <label class="block text-sm font-bold text-indigo-900">ផ្នែកគណនី</label>
-                        <button type="button" onclick="autoGenAccount()" class="text-xs bg-indigo-200 text-indigo-800 px-2 py-1 rounded">បង្កើតស្វ័យប្រវត្តិ</button>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-600">ឈ្មោះគណនី (អង់គ្លេស/លេខ ប៉ុណ្ណោះ)</label>
-                        <input type="text" id="reg-username" pattern="[a-zA-Z0-9]+" title="អនុញ្ញាតតែអក្សរអង់គ្លេស និងលេខប៉ុណ្ណោះ" required class="w-full p-2 border rounded text-sm" placeholder="username">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-600">ពាក្យសម្ងាត់ (លេខប៉ុណ្ណោះ)</label>
-                        <input type="password" id="reg-password" pattern="[0-9]+" title="អនុញ្ញាតតែលេខប៉ុណ្ណោះ" required class="w-full p-2 border rounded text-sm" placeholder="123456">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg font-semibold transition mt-2">ចុះឈ្មោះ</button>
-                <button type="button" onclick="showLoginForm()" class="w-full text-center text-sm text-gray-600 hover:underline">មានគណនីរួចហើយ? ចូលប្រព័ន្ធ</button>
-            </form>
-        </section>
-
-        <!-- 3. STUDENT DASHBOARD & QUIZ -->
-        <section id="sec-student-dash" class="hidden space-y-6">
-            <!-- Tabs -->
-            <div class="flex border-b border-gray-200 bg-white rounded-t-xl px-4 pt-2">
-                <button onclick="switchStudentTab('topics')" id="tab-btn-topics" class="py-2 px-4 border-b-2 font-bold text-indigo-600 border-indigo-600">មេរៀនទី១ ៖ ចំនួន (១០ ចំណុច)</button>
-                <button onclick="switchStudentTab('history')" id="tab-btn-history" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent">ប្រវត្តិទិន្នន័យផ្ទាល់ខ្លួន</button>
-                <button onclick="switchStudentTab('feedback')" id="tab-btn-feedback" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent">មតិកែលម្អ</button>
-            </div>
-
-            <!-- Tab Content 1: Topics List -->
-            <div id="student-tab-topics" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="topics-grid">
-                    <!-- Dynamic rendering of 10 topics -->
-                </div>
-            </div>
-
-            <!-- Tab Content 2: Student Score History -->
-            <div id="student-tab-history" class="hidden bg-white p-6 rounded-xl shadow">
-                <h3 class="text-lg font-bold text-slate-800 mb-4">ប្រវត្តិធ្វើលំហាត់របស់ខ្ញុំ</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-indigo-50 text-indigo-900 border-b">
-                            <tr>
-                                <th class="p-3">ចំណុចមេរៀន</th>
-                                <th class="p-3">កម្រិត</th>
-                                <th class="p-3">ពិន្ទុ</th>
-                                <th class="p-3">ភាគរយត្រូវ</th>
-                                <th class="p-3">កាលបរិច្ឆេទ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="student-history-table"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab Content 3: Student Feedback -->
-            <div id="student-tab-feedback" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="text-lg font-bold text-slate-800">ផ្ញើមតិកែលម្អរ ឬរាយការណ៍ខ្វះចន្លោះ</h3>
-                <textarea id="student-fb-text" rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="សរសេរមតិ ឬបញ្ហាផ្សេងៗ..."></textarea>
-                <button onclick="sendFeedback()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">ផ្ញើមតិ</button>
-
-                <hr class="my-4">
-                <h4 class="font-bold text-slate-700">ការឆ្លើយតបពីអ្នកគ្រប់គ្រង</h4>
-                <div id="student-fb-responses" class="space-y-3"></div>
-            </div>
-
-            <!-- Interactive Quiz Section (Hidden by default) -->
-            <div id="quiz-container" class="hidden bg-white p-6 rounded-xl shadow border border-indigo-200">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <h3 id="quiz-topic-title" class="font-bold text-lg text-indigo-900"></h3>
-                        <p id="quiz-level-badge" class="text-xs text-indigo-600 font-semibold"></p>
-                    </div>
-                    <button onclick="closeQuiz()" class="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">បិទ/ត្រឡប់</button>
-                </div>
-
-                <div class="mb-4 bg-indigo-50 p-3 rounded-lg flex justify-between text-sm">
-                    <span>សំណួរទី <span id="quiz-current-num">1</span> / 20</span>
-                    <span>ពិន្ទុ៖ <span id="quiz-score">0</span></span>
-                </div>
-
-                <div id="quiz-box" class="space-y-4">
-                    <p id="quiz-question" class="text-lg font-semibold text-slate-800 bg-slate-50 p-4 rounded-lg border"></p>
-                    <div id="quiz-options" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. TEACHER DASHBOARD -->
-        <section id="sec-teacher-dash" class="hidden space-y-6">
-            <div class="flex border-b border-gray-200 bg-white rounded-t-xl px-4 pt-2">
-                <button onclick="switchTeacherTab('select-students')" id="ttab-btn-select" class="py-2 px-4 border-b-2 font-bold text-emerald-600 border-emerald-600">ជ្រើសរើសសិស្ស</button>
-                <button onclick="switchTeacherTab('my-students')" id="ttab-btn-my" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent">ទិន្នន័យសិស្ស និងលំហាត់</button>
-                <button onclick="switchTeacherTab('feedback')" id="ttab-btn-fb" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent">មតិកែលម្អ</button>
-            </div>
-
-            <!-- Tab 1: Select Students -->
-            <div id="teacher-tab-select" class="bg-white p-6 rounded-xl shadow space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-slate-800">សិស្សទាំងអស់ក្នុងប្រព័ន្ធ (តាមសាលារៀនដូចគ្នា ឬផ្សេងទៀត)</h3>
-                    <input type="text" id="teacher-search-school" oninput="renderTeacherStudentSelect()" placeholder="ស្វែងរកតាមឈ្មោះ ឬសាលា..." class="p-2 border rounded-lg text-sm w-64">
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-emerald-50 text-emerald-900 border-b">
-                            <tr>
-                                <th class="p-3">ជ្រើសរើស</th>
-                                <th class="p-3">ឈ្មោះសិស្ស</th>
-                                <th class="p-3">ភេទ</th>
-                                <th class="p-3">ថ្នាក់ទី</th>
-                                <th class="p-3">សាលារៀន</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teacher-student-select-list"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 2: My Selected Students & Scores -->
-            <div id="teacher-tab-my" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="font-bold text-slate-800">ទិន្នន័យសិស្សដែលបានជ្រើសរើស</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-emerald-100 text-emerald-950 border-b">
-                            <tr>
-                                <th class="p-3">ឈ្មោះសិស្ស</th>
-                                <th class="p-3">សាលារៀន</th>
-                                <th class="p-3">ចំនួនមេរៀនបានធ្វើ</th>
-                                <th class="p-3">ពិន្ទុសរុប</th>
-                                <th class="p-3">សកម្មភាព</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teacher-my-students-list"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 3: Feedback -->
-            <div id="teacher-tab-feedback" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="text-lg font-bold text-slate-800">ផ្ញើមតិកែលម្អរ ឬរាយការណ៍ទៅកាន់ Admin</h3>
-                <textarea id="teacher-fb-text" rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="សរសេរមតិកែលម្អ..."></textarea>
-                <button onclick="sendFeedback()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">ផ្ញើមតិ</button>
-
-                <hr class="my-4">
-                <h4 class="font-bold text-slate-700">ការឆ្លើយតបពីអ្នកគ្រប់គ្រង</h4>
-                <div id="teacher-fb-responses" class="space-y-3"></div>
-            </div>
-        </section>
-
-        <!-- 5. ADMIN DASHBOARD -->
-        <section id="sec-admin-dash" class="hidden space-y-6">
-            <div class="flex border-b border-gray-200 bg-white rounded-t-xl px-4 pt-2 overflow-x-auto">
-                <button onclick="switchAdminTab('teachers')" id="atab-btn-teachers" class="py-2 px-4 border-b-2 font-bold text-amber-600 border-amber-600 whitespace-nowrap">គ្រូបង្រៀន</button>
-                <button onclick="switchAdminTab('students')" id="atab-btn-students" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent whitespace-nowrap">សិស្ស</button>
-                <button onclick="switchAdminTab('requests')" id="atab-btn-requests" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent whitespace-nowrap">សំណើ (ភ្លេចគណនី)</button>
-                <button onclick="switchAdminTab('feedback')" id="atab-btn-feedback" class="py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent whitespace-nowrap">មតិកែលម្អ</button>
-            </div>
-
-            <!-- Admin Tab 1: Teachers -->
-            <div id="admin-tab-teachers" class="bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="font-bold text-slate-800">បញ្ជីគ្រូបង្រៀនទាំងអស់</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-amber-50 text-amber-900 border-b">
-                            <tr>
-                                <th class="p-3">ឈ្មោះគ្រូ</th>
-                                <th class="p-3"> Telegram</th>
-                                <th class="p-3">សាលារៀន</th>
-                                <th class="p-3">ចំនួនសិស្សក្នុងថ្នាក់</th>
-                                <th class="p-3">សកម្មភាព</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-teachers-list"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Admin Tab 2: Students -->
-            <div id="admin-tab-students" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="font-bold text-slate-800">បញ្ជីសិស្សទាំងអស់ក្នុងប្រព័ន្ធ</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-amber-50 text-amber-900 border-b">
-                            <tr>
-                                <th class="p-3">ឈ្មោះសិស្ស</th>
-                                <th class="p-3">Username</th>
-                                <th class="p-3">សាលារៀន</th>
-                                <th class="p-3">ពិន្ទុសរុប</th>
-                                <th class="p-3">សកម្មភាព</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-students-list"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Admin Tab 3: Account Reset Requests -->
-            <div id="admin-tab-requests" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="font-bold text-slate-800">សំណើភ្លេចគណនីពីសិស្ស និងគ្រូ</h3>
-                <div id="admin-requests-list" class="space-y-3"></div>
-            </div>
-
-            <!-- Admin Tab 4: Feedback Management & Chat -->
-            <div id="admin-tab-feedback" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="font-bold text-slate-800">មតិកែលម្អពីអ្នកប្រើប្រាស់ (ឆ្លើយតបដូច Telegram)</h3>
-                <div id="admin-feedback-list" class="space-y-4"></div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Modal: Profile Edit & Account Deletion -->
-    <div id="modal-profile" class="hidden fixed inset-0 modal-bg flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl space-y-4">
-            <h3 class="text-lg font-bold text-slate-800">កែប្រែទិន្នន័យគណនីផ្ទាល់ខ្លួន</h3>
-            <form onsubmit="saveProfile(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs text-gray-600">ឈ្មោះពេញ</label>
-                    <input type="text" id="edit-fullname" required class="w-full p-2 border rounded text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-600">សាលារៀន</label>
-                    <input type="text" id="edit-school" required class="w-full p-2 border rounded text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-600">ពាក្យសម្ងាត់ថ្មី (លេខ)</label>
-                    <input type="password" id="edit-password" pattern="[0-9]+" class="w-full p-2 border rounded text-sm" placeholder="ទុកទំនេរប្រសិនបើមិនប្តូរ">
-                </div>
-                <div class="flex justify-between items-center pt-2">
-                    <button type="button" onclick="deleteAccount()" class="text-xs bg-red-100 text-red-600 px-3 py-2 rounded hover:bg-red-200">បោះបង់/លុបគណនី</button>
-                    <div class="space-x-2">
-                        <button type="button" onclick="closeProfileModal()" class="text-xs bg-gray-200 px-3 py-2 rounded">បិទ</button>
-                        <button type="submit" class="text-xs bg-indigo-600 text-white px-3 py-2 rounded hover:bg-indigo-700">រក្សាទុក</button>
-                    </div>
-                </div>
-            </form>
+    <!-- ==================== SECTION 1: AUTH & ENTRY ==================== -->
+    <section id="authSection" class="max-w-lg mx-auto space-y-6">
+      
+      <!-- Role Selection Card -->
+      <div id="roleCard" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+        <h2 class="text-xl font-bold text-center text-indigo-800 mb-2">សូមជ្រើសរើសតួនាទីចូលប្រើប្រាស់</h2>
+        <p class="text-xs text-slate-500 text-center mb-6">ប្រព័ន្ធសិក្សាគណិតវិទ្យាកម្រិតបឋមសិក្សា</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+          <button onclick="chooseRole('student')" class="flex flex-col items-center justify-center p-4 border-2 border-indigo-100 bg-indigo-50/50 hover:bg-indigo-100 hover:border-indigo-500 rounded-2xl transition group">
+            <span class="text-3xl mb-1 group-hover:scale-110 transition">🧑‍🎓</span>
+            <span class="font-bold text-xs text-indigo-900">សិស្ស</span>
+          </button>
+          <button onclick="chooseRole('teacher')" class="flex flex-col items-center justify-center p-4 border-2 border-purple-100 bg-purple-50/50 hover:bg-purple-100 hover:border-purple-500 rounded-2xl transition group">
+            <span class="text-3xl mb-1 group-hover:scale-110 transition">🧑‍🏫</span>
+            <span class="font-bold text-xs text-purple-900">គ្រូបង្រៀន</span>
+          </button>
+          <button onclick="chooseRole('admin')" class="flex flex-col items-center justify-center p-4 border-2 border-amber-100 bg-amber-50/50 hover:bg-amber-100 hover:border-amber-500 rounded-2xl transition group">
+            <span class="text-3xl mb-1 group-hover:scale-110 transition">👑</span>
+            <span class="font-bold text-xs text-amber-900">អ្នកគ្រប់គ្រង</span>
+          </button>
         </div>
-    </div>
 
-    <!-- Modal: Forgot Password Request -->
-    <div id="modal-forgot" class="hidden fixed inset-0 modal-bg flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl space-y-4">
-            <h3 class="text-lg font-bold text-slate-800">ស្នើរក្សាគណនីឡើងវិញ (ភ្លេចពាក្យសម្ងាត់)</h3>
-            <p class="text-xs text-gray-600">សូមបញ្ចូលព័ត៌មានរបស់អ្នកដើម្បីផ្ញើសំណើទៅកាន់ Admin</p>
-            <input type="text" id="forgot-name" placeholder="ឈ្មោះរបស់អ្នក" class="w-full p-2 border rounded text-sm">
-            <input type="text" id="forgot-school" placeholder="ឈ្មោះសាលារៀន" class="w-full p-2 border rounded text-sm">
-            <div class="flex justify-end space-x-2">
-                <button onclick="closeForgotModal()" class="text-xs bg-gray-200 px-3 py-2 rounded">បោះបង់</button>
-                <button onclick="submitForgotRequest()" class="text-xs bg-indigo-600 text-white px-3 py-2 rounded">ផ្ញើសំណើ</button>
-            </div>
+        <div class="text-center pt-2 border-t">
+          <button onclick="showForgotModal()" class="text-xs text-rose-600 font-semibold hover:underline">
+            ❓ ភ្លេចឈ្មោះគណនី ឬពាក្យសម្ងាត់?
+          </button>
         </div>
-    </div>
+      </div>
 
-    <!-- Footer Disclaimer -->
-    <footer class="bg-slate-800 text-white text-center py-4 text-xs font-semibold mt-auto border-t border-slate-700 shadow-inner">
-        <p class="text-yellow-400 font-bold text-sm mb-1">តេស្តសាកល្បង សូមអធ្យាស្រ័យ</p>
-        <p class="text-slate-400">© 2026 ប្រព័ន្ធសិក្សាគណិតវិទ្យា ថ្នាក់ទី៤ | រក្សាសិទ្ធិគ្រប់យ៉ាង</p>
-    </footer>
+      <!-- Login / Register Modal Container -->
+      <div id="authFormCard" class="hidden bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+        <button onclick="backToRoleSelect()" class="text-xs text-slate-400 hover:text-indigo-600 mb-4 flex items-center gap-1 font-semibold">
+          ← ជ្រើសរើសតួនាទីឡើងវិញ
+        </button>
 
-    <!-- JavaScript Logic -->
-    <script>
-        // Database Initialization in LocalStorage
-        const DB_KEY_USERS = 'm4_users_v1';
-        const DB_KEY_SCORES = 'm4_scores_v1';
-        const DB_KEY_FEEDBACK = 'm4_feedback_v1';
-        const DB_KEY_REQUESTS = 'm4_requests_v1';
-        const SESSION_KEY = 'm4_session_user';
+        <div class="flex border-b mb-6">
+          <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 font-bold text-sm border-b-2 border-indigo-600 text-indigo-600">ចូលប្រព័ន្ធ (Login)</button>
+          <button id="tabRegBtn" onclick="switchAuthTab('register')" class="flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-600">ចុះឈ្មោះថ្មី (Register)</button>
+        </div>
 
-        // Initializing default Super Admin (Sokchea2004)
-        function initDB() {
-            if (!localStorage.getItem(DB_KEY_USERS)) {
-                const defaultAdmin = {
-                    id: 'admin_root',
-                    role: 'admin',
-                    username: 'Sokchea2004',
-                    password: '01012004',
-                    fullname: 'ហឿន សុខជា (Super Admin)',
-                    gender: 'ប្រុស',
-                    grade: 'ថ្នាក់ទី៤',
-                    school: 'សាលាបឋមសិក្សា ព្រែកសង្កែ',
-                    phone: '01012004',
-                    tgUser: '@Sokchea2004',
-                    isNextAdmin: true
-                };
-                localStorage.setItem(DB_KEY_USERS, JSON.stringify([defaultAdmin]));
-            }
-            if (!localStorage.getItem(DB_KEY_SCORES)) localStorage.setItem(DB_KEY_SCORES, JSON.stringify([]));
-            if (!localStorage.getItem(DB_KEY_FEEDBACK)) localStorage.setItem(DB_KEY_FEEDBACK, JSON.stringify([]));
-            if (!localStorage.getItem(DB_KEY_REQUESTS)) localStorage.setItem(DB_KEY_REQUESTS, JSON.stringify([]));
-        }
-        initDB();
+        <!-- LOGIN FORM -->
+        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ឈ្មោះគណនី (Username)</label>
+            <input type="text" id="loginUsername" required placeholder="ជាអក្សរអង់គ្លេស ឬលេខ" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ពាក្យសម្ងាត់ (Password)</label>
+            <input type="password" id="loginPassword" required placeholder="ជាលេខ" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-md">
+            ចូលប្រព័ន្ធ
+          </button>
+        </form>
 
-        let currentUser = JSON.parse(localStorage.getItem(SESSION_KEY)) || null;
-        let selectedRoleTemp = 'student';
+        <!-- REGISTER FORM -->
+        <form id="regForm" onsubmit="handleRegister(event)" class="hidden space-y-4">
+          <div class="bg-indigo-50/60 p-3 rounded-xl border border-indigo-100 mb-2">
+            <p class="text-xs font-bold text-indigo-800">១. ព័ត៌មានផ្ទាល់ខ្លួន</p>
+          </div>
 
-        // App Launch Auto-Login
-        window.onload = function() {
-            if (currentUser) {
-                launchUserDashboard();
-            } else {
-                showRoleSelect();
-            }
-        };
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ឈ្មោះពេញ *</label>
+            <input type="text" id="regName" required placeholder="ឧ. កែវ មុន្នី" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm">
+          </div>
 
-        // Navigation & View Routing
-        function showRoleSelect() {
-            hideAllSections();
-            document.getElementById('sec-role-select').classList.remove('hidden');
-            document.getElementById('nav-user-info').classList.add('hidden');
-        }
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">ភេទ *</label>
+              <select id="regGender" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                <option value="ប្រុស">ប្រុស</option>
+                <option value="ស្រី">ស្រី</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">ថ្នាក់ទី *</label>
+              <select id="regGrade" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                <option value="៤A">ថ្នាក់ទី ៤A</option>
+                <option value="៤B">ថ្នាក់ទី ៤B</option>
+                <option value="៤C">ថ្នាក់ទី ៤C</option>
+                <option value="៤D">ថ្នាក់ទី ៤D</option>
+              </select>
+            </div>
+          </div>
 
-        function selectRole(role) {
-            selectedRoleTemp = role;
-            hideAllSections();
-            document.getElementById('sec-auth').classList.remove('hidden');
-            showLoginForm();
-        }
+          <!-- Teacher & Admin Phone/Telegram -->
+          <div id="phoneGroup" class="hidden space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">លេខទូរស័ព្ទ Telegram *</label>
+              <input type="tel" id="regPhone" placeholder="ឧ. 012345678" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm">
+            </div>
+          </div>
 
-        function backToRoleSelect() {
-            showRoleSelect();
-        }
+          <!-- Admin Extra Fields -->
+          <div id="adminGroup" class="hidden space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Username Telegram *</label>
+              <input type="text" id="regTgUser" placeholder="@username" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">QR Code Telegram (រូបថត) *</label>
+              <input type="file" id="regQrCode" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            </div>
+          </div>
 
-        function showLoginForm() {
-            document.getElementById('form-login').classList.remove('hidden');
-            document.getElementById('form-register').classList.add('hidden');
-            const roleNames = { student: 'សិស្ស', teacher: 'គ្រូបង្រៀន', admin: 'អ្នកគ្រប់គ្រង' };
-            document.getElementById('auth-title').innerText = `ចូលប្រព័ន្ធ (${roleNames[selectedRoleTemp]})`;
-        }
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">សាលារៀន *</label>
+            <input type="text" id="regSchool" required placeholder="សាលាបឋមសិក្សា..." class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm">
+          </div>
 
-        function showRegisterForm() {
-            document.getElementById('form-login').classList.add('hidden');
-            document.getElementById('form-register').classList.remove('hidden');
-            const roleNames = { student: 'សិស្ស', teacher: 'គ្រូបង្រៀន', admin: 'អ្នកគ្រប់គ្រង' };
-            document.getElementById('auth-title').innerText = `ចុះឈ្មោះ (${roleNames[selectedRoleTemp]})`;
-            
-            // Show role specific fields
-            document.getElementById('reg-teacher-extra').classList.toggle('hidden', selectedRoleTemp !== 'teacher');
-            document.getElementById('reg-admin-extra').classList.toggle('hidden', selectedRoleTemp !== 'admin');
-        }
+          <div class="bg-indigo-50/60 p-3 rounded-xl border border-indigo-100 mb-2 mt-4">
+            <p class="text-xs font-bold text-indigo-800">២. ផ្នែកគណនី (Account)</p>
+          </div>
 
-        function hideAllSections() {
-            ['sec-role-select', 'sec-auth', 'sec-student-dash', 'sec-teacher-dash', 'sec-admin-dash'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-        }
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-xs font-bold text-slate-600">ឈ្មោះគណនី (Username) *</label>
+              <button type="button" onclick="autoGenCredentials()" class="text-[10px] text-indigo-600 font-bold hover:underline">⚡ បង្កើតស្វ័យប្រវត្តិ</button>
+            </div>
+            <input type="text" id="regUsername" required pattern="[a-zA-Z0-9]+" placeholder="ជាអក្សរអង់គ្លេស ឬលេខ ប៉ុណ្ណោះ" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm">
+          </div>
 
-        function autoGenAccount() {
-            const rand = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('reg-username').value = selectedRoleTemp + rand;
-            document.getElementById('reg-password').value = Math.floor(100000 + Math.random() * 900000);
-        }
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ពាក្យសម្ងាត់ (Password) *</label>
+            <input type="password" id="regPassword" required pattern="[0-9]+" placeholder="ជាលេខប៉ុណ្ណោះ" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm">
+          </div>
 
-        // Authentication Handler
-        function handleRegister(e) {
-            e.preventDefault();
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            const username = document.getElementById('reg-username').value.trim();
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-md">
+            បញ្ជាក់ការចុះឈ្មោះ
+          </button>
+        </form>
 
-            if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
-                alert('ឈ្មោះគណនីនេះមានរួចហើយ! សូមជ្រើសរើសឈ្មោះផ្សេង។');
-                return;
-            }
+      </div>
 
-            const newUser = {
-                id: 'u_' + Date.now(),
-                role: selectedRoleTemp,
-                fullname: document.getElementById('reg-fullname').value,
-                gender: document.getElementById('reg-gender').value,
-                grade: document.getElementById('reg-grade').value,
-                school: document.getElementById('reg-school').value,
-                username: username,
-                password: document.getElementById('reg-password').value,
-                selectedStudents: []
-            };
+    </section>
 
-            if (selectedRoleTemp === 'teacher') {
-                newUser.phone = document.getElementById('reg-phone').value;
-            } else if (selectedRoleTemp === 'admin') {
-                newUser.phone = document.getElementById('reg-admin-phone').value;
-                newUser.tgUser = document.getElementById('reg-admin-tguser').value;
-                newUser.isNextAdmin = false;
-            }
+    <!-- ==================== SECTION 2: STUDENT DASHBOARD ==================== -->
+    <section id="studentDashboard" class="hidden space-y-6">
+      
+      <!-- Top Action Bar -->
+      <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200 gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-800">📚 មេរៀនទី១ ៖ ចំនួន (រហូតដល់ ១០០ ០០០)</h2>
+          <p class="text-xs text-slate-500">ជ្រើសរើសចំណុចលំហាត់ដើម្បីអនុវត្ត</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="openFeedbackModal()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1">
+            💬 មតិកែលម្អ
+          </button>
+          <button onclick="showStudentHistory()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1">
+            📜 ប្រវត្តិពិន្ទុ
+          </button>
+        </div>
+      </div>
 
-            users.push(newUser);
-            localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
-            alert(`ចុះឈ្មោះជោគជ័យ!\nឈ្មោះគណនី៖ ${newUser.username}\nពាក្យសម្ងាត់៖ ${newUser.password}`);
-            currentUser = newUser;
-            localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-            launchUserDashboard();
-        }
+      <!-- 10 Topics Grid -->
+      <div id="topicsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            const un = document.getElementById('login-username').value.trim();
-            const pw = document.getElementById('login-password').value.trim();
+    <!-- ==================== SECTION 3: QUIZ ARENA WITH TIMER ==================== -->
+    <section id="quizArena" class="hidden bg-white rounded-2xl shadow-lg border border-slate-200 p-4 md:p-6">
+      
+      <!-- Quiz Header -->
+      <div class="flex justify-between items-center border-b pb-4 mb-4 gap-2">
+        <div>
+          <span id="quizDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"></span>
+          <h3 id="quizTopicTitle" class="font-bold text-slate-800 text-sm md:text-base mt-1"></h3>
+        </div>
+        
+        <!-- Timer Display (2 Minutes per Question) -->
+        <div class="bg-rose-50 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl flex items-center gap-2 font-bold text-sm">
+          <span>⏱️</span>
+          <span id="timerDisplay">02:00</span>
+        </div>
 
-            const user = users.find(u => u.username.toLowerCase() === un.toLowerCase() && u.password === pw);
-            if (!user) {
-                alert('ឈ្មោះគណនី ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវឡើយ!');
-                return;
-            }
+        <button onclick="quitQuiz()" class="text-xs text-slate-400 hover:text-red-500 font-semibold border px-3 py-1.5 rounded-lg">
+          ចាកចេញ
+        </button>
+      </div>
 
-            currentUser = user;
-            localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-            launchUserDashboard();
-        }
+      <!-- Progress Bar -->
+      <div class="grid grid-cols-3 gap-2 md:gap-4 text-center mb-6 bg-slate-50 p-3 rounded-xl border">
+        <div>
+          <p class="text-[10px] text-slate-400">សំណួរ</p>
+          <p class="text-base font-bold text-slate-700"><span id="qCurrentNum">1</span> / 20</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-slate-400">ពិន្ទុបាន</p>
+          <p class="text-base font-bold text-emerald-600" id="qCurrentScore">0</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-slate-400">ភាគរយត្រូវ</p>
+          <p class="text-base font-bold text-indigo-600" id="qAccuracy">100%</p>
+        </div>
+      </div>
 
-        function logout() {
-            localStorage.removeItem(SESSION_KEY);
-            currentUser = null;
-            showRoleSelect();
-        }
+      <!-- Question Box -->
+      <div class="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-6 text-center mb-6 min-h-[140px] flex flex-col justify-center items-center">
+        <p class="text-xs font-bold text-indigo-500 mb-2">សំណួរទី <span id="qDisplayIndex">1</span></p>
+        <h2 id="qText" class="text-xl md:text-2xl font-extrabold text-slate-800 leading-relaxed"></h2>
+      </div>
 
-        function launchUserDashboard() {
-            hideAllSections();
-            document.getElementById('nav-user-info').classList.remove('hidden');
-            document.getElementById('user-badge').innerText = `${currentUser.fullname} (${currentUser.role.toUpperCase()})`;
+      <!-- Options -->
+      <div id="qOptionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+    </section>
 
-            if (currentUser.role === 'student') {
-                document.getElementById('sec-student-dash').classList.remove('hidden');
-                renderStudentTopics();
-                renderStudentHistory();
-                renderStudentFeedbackResponses();
-            } else if (currentUser.role === 'teacher') {
-                document.getElementById('sec-teacher-dash').classList.remove('hidden');
-                renderTeacherStudentSelect();
-                renderTeacherMyStudents();
-                renderTeacherFeedbackResponses();
-            } else if (currentUser.role === 'admin') {
-                document.getElementById('sec-admin-dash').classList.remove('hidden');
-                renderAdminTeachers();
-                renderAdminStudents();
-                renderAdminRequests();
-                renderAdminFeedback();
-            }
-        }
+    <!-- Quiz Result Screen -->
+    <section id="resultSection" class="hidden bg-white p-6 rounded-2xl shadow-xl border border-slate-200 text-center max-w-lg mx-auto space-y-4">
+      <div class="text-6xl">🏆</div>
+      <h2 class="text-2xl font-extrabold text-slate-800">ធ្វើរួចរាល់ហើយ!</h2>
+      <p id="resultTopicName" class="text-xs font-bold text-indigo-600"></p>
 
-        // ================= LESSON 1 MATH TOPICS & GENERATOR =================
-        const TOPICS_LESSON_1 = [
-            { id: 1, name: "១. ការអានចំនួន", desc: "អានចំនួនជាអក្សរខ្មែរ" },
-            { id: 2, name: "២. ការបំពេញចំនួន", desc: "ជ្រើសរើសចម្លើយជាចំនួនពីអក្សរ" },
-            { id: 3, name: "៣. ការបំពេញលំនាំ", desc: "ស្វែងរកលំនាំចំនួនដែលបាត់" },
-            { id: 4, name: "៤. ការប្រាប់ខ្ទង់", desc: "កំណត់ខ្ទង់ (រាយ, ដប់, រយ, ពាន់...)" },
-            { id: 5, name: "៥. តម្លៃលេខតាមខ្ទង់", desc: "ស្វែងរកតម្លៃលេខតាមខ្ទង់" },
-            { id: 6, name: "៦. ទម្រង់ពង្រាយ", desc: "ទម្រង់ពង្រាយបូកចំនួន" },
-            { id: 7, name: "៧. ប្រៀបធៀបចំនួន", desc: "ប្រៀបធៀប ធំ, តូច, ស្មើ (>, <, =)" },
-            { id: 8, name: "៨. ការរៀបលំដាប់ចំនួន", desc: "រៀបតាមលំដាប់ពីតូចទៅធំ" },
-            { id: 9, name: "៩. ការបង្កើតចំនួន", desc: "ចំនួនធំបំផុត និងតូចបំផុត" },
-            { id: 10, name: "១០. ការបង្កត់ចំនួន", desc: "បង្គត់តាមខ្ទង់ (ដប់, រយ, ពាន់)" }
-        ];
+      <div class="bg-slate-50 p-4 rounded-xl border space-y-2 text-sm">
+        <div class="flex justify-between"><span>ពិន្ទទទួលបាន៖</span><span class="font-bold" id="resFinalScore">0 / 20</span></div>
+        <div class="flex justify-between"><span>ភាគរយត្រូវ៖</span><span class="font-bold text-emerald-600" id="resAccuracy">0%</span></div>
+      </div>
 
-        let activeQuizQuestions = [];
-        let currentQIndex = 0;
-        let quizScore = 0;
-        let currentTopicId = 1;
-        let currentLevel = 'easy';
+      <div class="flex gap-3">
+        <button onclick="restartCurrentQuiz()" class="flex-1 bg-amber-500 text-white font-bold py-3 rounded-xl text-sm">🔄 ធ្វើឡើងវិញ</button>
+        <button onclick="showStudentDashboard()" class="flex-1 bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm">📚 ត្រឡប់ក្រោយ</button>
+      </div>
+    </section>
 
-        function renderStudentTopics() {
-            const grid = document.getElementById('topics-grid');
-            grid.innerHTML = TOPICS_LESSON_1.map(t => `
-                <div class="bg-white p-5 rounded-xl shadow hover:shadow-md border border-slate-100 space-y-3">
-                    <h4 class="font-bold text-indigo-900">${t.name}</h4>
-                    <p class="text-xs text-gray-500">${t.desc}</p>
-                    <div class="flex space-x-1 pt-2">
-                        <button onclick="startQuiz(${t.id}, 'easy')" class="flex-1 bg-green-100 hover:bg-green-200 text-green-800 text-xs py-1.5 rounded font-semibold">ងាយ</button>
-                        <button onclick="startQuiz(${t.id}, 'medium')" class="flex-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs py-1.5 rounded font-semibold">មធ្យម</button>
-                        <button onclick="startQuiz(${t.id}, 'hard')" class="flex-1 bg-red-100 hover:bg-red-200 text-red-800 text-xs py-1.5 rounded font-semibold">លំបាក</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+    <!-- Student History Screen -->
+    <section id="studentHistorySection" class="hidden bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+      <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-lg font-bold text-slate-800">📜 ប្រវត្តិពិន្ទុរបស់ខ្ញុំ</h2>
+        <button onclick="showStudentDashboard()" class="text-xs font-bold text-indigo-600 border px-3 py-1.5 rounded-xl">← ត្រឡប់ក្រោយ</button>
+      </div>
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left text-xs md:text-sm">
+          <thead class="bg-slate-100 text-slate-600">
+            <tr>
+              <th class="p-3">កាលបរិច្ឆេទ</th>
+              <th class="p-3">ចំណុចលំហាត់</th>
+              <th class="p-3 text-center">កម្រិត</th>
+              <th class="p-3 text-center">ពិន្ទុ</th>
+              <th class="p-3 text-center">ភាគរយ</th>
+            </tr>
+          </thead>
+          <tbody id="studentHistoryBody" class="divide-y text-slate-700"></tbody>
+        </table>
+      </div>
+    </section>
 
-        // Helper functions for Khmer numbers
-        function numberToKhmerText(num) {
-            const khmerDigits = ['សូន្យ', 'មួយ', 'ពីរ', 'បី', 'បួន', 'ប្រាំ', 'ប្រាំមួយ', 'ប្រាំពីរ', 'ប្រាំបី', 'ប្រាំបួន'];
-            if (num === 23045) return "ពីរម៉ឺនបីពាន់សែសិបប្រាំ";
-            if (num === 23565) return "ពីរម៉ឺនបីពាន់ប្រាំរយហុកសិបប្រាំ";
-            if (num === 12345) return "មួយម៉ឺនពីរពាន់បីរយសែសិបប្រាំ";
-            return num.toString();
-        }
+    <!-- ==================== SECTION 4: TEACHER DASHBOARD ==================== -->
+    <section id="teacherDashboard" class="hidden space-y-6">
+      
+      <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b pb-4">
+          <div>
+            <h2 class="text-xl font-bold text-purple-900">🧑‍🏫 ផ្ទាំងគ្រប់គ្រងសម្រាប់គ្រូបង្រៀន</h2>
+            <p class="text-xs text-slate-500">សាលារៀន៖ <span id="teacherSchoolName" class="font-bold text-indigo-600"></span></p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openFeedbackModal()" class="bg-purple-600 text-white text-xs font-bold px-3 py-2 rounded-xl">💬 មតិកែលម្អ</button>
+          </div>
+        </div>
 
-        function generateQuestions(topicId, level) {
-            let questions = [];
-            for (let i = 0; i < 20; i++) {
-                let qText = "", ans = "", opts = [];
-                let base = (level === 'easy') ? 1000 : (level === 'medium') ? 10000 : 50000;
-                let val = Math.floor(Math.random() * base) + 1000;
+        <!-- Student Selector Menu -->
+        <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 flex flex-col sm:flex-row items-center gap-3">
+          <label class="text-xs font-bold text-purple-900 whitespace-nowrap">ជ្រើសរើសសិស្សដើម្បីពិនិត្យ៖</label>
+          <select id="teacherStudentSelect" onchange="loadTeacherSelectedStudentData()" class="w-full bg-white px-4 py-2 rounded-xl border text-xs font-bold text-slate-700 outline-none">
+            <!-- Dynamic Students Options -->
+          </select>
+        </div>
 
-                if (topicId === 1) {
-                    qText = `ចំនួន ${val} អានថាដូចម្តេច?`;
-                    ans = numberToKhmerText(val);
-                    opts = [ans, "ពីរម៉ឺនបីពាន់សែសិបប្រាំ", "មួយម៉ឺនប្រាំពាន់", "បីម៉ឺនពីររយ"];
-                } else if (topicId === 2) {
-                    qText = `«${numberToKhmerText(val)}» ត្រូវនឹងចំនួនណា?`;
-                    ans = val.toString();
-                    opts = [ans, (val + 10).toString(), (val - 5).toString(), (val + 100).toString()];
-                } else if (topicId === 3) {
-                    let step = (level === 'easy') ? 1000 : 5000;
-                    qText = `បំពេញលំនាំ៖ ${val}, ${val+step}, ..., ${val+(step*3)}`;
-                    ans = (val + (step * 2)).toString();
-                    opts = [ans, (val + step * 2 + 50).toString(), (val + step).toString(), (val + step * 4).toString()];
-                } else if (topicId === 4) {
-                    qText = `ចំនួន 12345 លេខ 2 នៅខ្ទង់អ្វី?`;
-                    ans = "ពាន់";
-                    opts = ["រាយ", "ដប់", "រយ", "ពាន់", "ម៉ឺន"];
-                } else if (topicId === 5) {
-                    qText = `ចំនួន 12345 លេខ 1 មានតម្លៃស្មើប៉ុន្មាន?`;
-                    ans = "10000";
-                    opts = ["10000", "1000", "100", "10"];
-                } else if (topicId === 6) {
-                    qText = `ទម្រង់ពង្រាយនៃចំនួន 12345 គឺ៖`;
-                    ans = "10000 + 2000 + 300 + 40 + 5";
-                    opts = [ans, "10000 + 200 + 30 + 5", "10000 + 2000 + 30", "12000 + 345"];
-                } else if (topicId === 7) {
-                    let v2 = val + (Math.random() > 0.5 ? 50 : -50);
-                    qText = `ប្រៀបធៀបចំនួន៖ ${val} [ ? ] ${v2}`;
-                    ans = val > v2 ? ">" : "<";
-                    opts = [">", "<", "="];
-                } else if (topicId === 8) {
-                    qText = `ជ្រើសរើសការរៀបលំដាប់ពីតូចទៅធំ៖`;
-                    ans = "12000, 12050, 12101, 13011";
-                    opts = [ans, "13011, 12101, 12050, 12000", "12050, 12000, 12101, 13011"];
-                } else if (topicId === 9) {
-                    qText = `បង្កើតចំនួនធំបំផុតពីលេខ [ 1, 5, 3, 9 ] ៖`;
-                    ans = "9531";
-                    opts = ["9531", "1359", "9351", "5931"];
-                } else if (topicId === 10) {
-                    qText = `បង្គត់ចំនួន 12345 ត្រឹមខ្ទង់ពាន់ ទទួលបាន៖`;
-                    ans = "12000";
-                    opts = ["12000", "13000", "12300", "10000"];
-                }
+        <!-- Selected Student Display Area -->
+        <div id="selectedStudentDataArea" class="hidden space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-slate-50 p-3 rounded-xl border"><p class="text-[10px] text-slate-400">ឈ្មោះសិស្ស</p><p class="font-bold text-slate-800" id="tStName">-</p></div>
+            <div class="bg-slate-50 p-3 rounded-xl border"><p class="text-[10px] text-slate-400">ថ្នាក់ / ភេទ</p><p class="font-bold text-slate-800" id="tStGrade">-</p></div>
+            <div class="bg-slate-50 p-3 rounded-xl border"><p class="text-[10px] text-slate-400">សាលារៀន</p><p class="font-bold text-slate-800" id="tStSchool">-</p></div>
+          </div>
 
-                // Shuffle options
-                opts = Array.from(new Set(opts)).sort(() => Math.random() - 0.5);
-                questions.push({ question: qText, answer: ans, options: opts });
-            }
-            return questions;
-        }
-
-        function startQuiz(topicId, level) {
-            currentTopicId = topicId;
-            currentLevel = level;
-            activeQuizQuestions = generateQuestions(topicId, level);
-            currentQIndex = 0;
-            quizScore = 0;
-
-            document.getElementById('quiz-container').classList.remove('hidden');
-            document.getElementById('quiz-topic-title').innerText = TOPICS_LESSON_1.find(t => t.id === topicId).name;
-            document.getElementById('quiz-level-badge').innerText = `កម្រិត៖ ${level === 'easy' ? 'ងាយ' : level === 'medium' ? 'មធ្យម' : 'លំបាក'}`;
-            showQuestion();
-            window.scrollTo({ top: document.getElementById('quiz-container').offsetTop - 20, behavior: 'smooth' });
-        }
-
-        function showQuestion() {
-            if (currentQIndex >= activeQuizQuestions.length) {
-                finishQuiz();
-                return;
-            }
-            const q = activeQuizQuestions[currentQIndex];
-            document.getElementById('quiz-current-num').innerText = currentQIndex + 1;
-            document.getElementById('quiz-score').innerText = quizScore;
-            document.getElementById('quiz-question').innerText = q.question;
-
-            const optsBox = document.getElementById('quiz-options');
-            optsBox.innerHTML = q.options.map(opt => `
-                <button onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="p-3 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-left text-sm font-semibold transition">${opt}</button>
-            `).join('');
-        }
-
-        function checkAnswer(selectedOpt) {
-            const q = activeQuizQuestions[currentQIndex];
-            if (selectedOpt === q.answer) {
-                quizScore += 1;
-            }
-            currentQIndex++;
-            showQuestion();
-        }
-
-        function finishQuiz() {
-            alert(`អ្នកបានបញ្ចប់ការធ្វើលំហាត់!\nពិន្ទទទួលបាន៖ ${quizScore} / 20`);
-            
-            // Save Score
-            const scores = JSON.parse(localStorage.getItem(DB_KEY_SCORES));
-            scores.push({
-                id: 'sc_' + Date.now(),
-                studentId: currentUser.id,
-                studentName: currentUser.fullname,
-                school: currentUser.school,
-                topicId: currentTopicId,
-                topicName: TOPICS_LESSON_1.find(t => t.id === currentTopicId).name,
-                level: currentLevel,
-                score: quizScore,
-                total: 20,
-                accuracy: ((quizScore / 20) * 100).toFixed(0) + '%',
-                date: new Date().toLocaleDateString('km-KH')
-            });
-            localStorage.setItem(DB_KEY_SCORES, JSON.stringify(scores));
-
-            closeQuiz();
-            renderStudentHistory();
-        }
-
-        function closeQuiz() {
-            document.getElementById('quiz-container').classList.add('hidden');
-        }
-
-        function switchStudentTab(tab) {
-            ['topics', 'history', 'feedback'].forEach(t => {
-                document.getElementById(`student-tab-${t}`).classList.toggle('hidden', t !== tab);
-                const btn = document.getElementById(`tab-btn-${t}`);
-                if (t === tab) {
-                    btn.className = "py-2 px-4 border-b-2 font-bold text-indigo-600 border-indigo-600";
-                } else {
-                    btn.className = "py-2 px-4 border-b-2 font-bold text-gray-500 border-transparent";
-                }
-            });
-        }
-
-        function renderStudentHistory() {
-            const scores = JSON.parse(localStorage.getItem(DB_KEY_SCORES)).filter(s => s.studentId === currentUser.id);
-            const tbody = document.getElementById('student-history-table');
-            if (scores.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">មិនទាន់មានប្រវត្តិធ្វើលំហាត់នៅឡើយ</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = scores.map(s => `
-                <tr class="border-b hover:bg-slate-50">
-                    <td class="p-3">${s.topicName}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-indigo-100 text-indigo-800">${s.level}</span></td>
-                    <td class="p-3 font-bold text-indigo-700">${s.score} / ${s.total}</td>
-                    <td class="p-3 font-bold text-emerald-600">${s.accuracy}</td>
-                    <td class="p-3 text-gray-500 text-xs">${s.date}</td>
+          <h4 class="font-bold text-xs text-slate-700 mt-4">ប្រវត្តិធ្វើលំហាត់របស់សិស្ស៖</h4>
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-purple-100 text-purple-900">
+                <tr>
+                  <th class="p-2">កាលបរិច្ឆេទ</th>
+                  <th class="p-2">ចំណុចលំហាត់</th>
+                  <th class="p-2 text-center">កម្រិត</th>
+                  <th class="p-2 text-center">ពិន្ទុ</th>
+                  <th class="p-2 text-center">ភាគរយ</th>
                 </tr>
-            `).join('');
+              </thead>
+              <tbody id="tStHistoryBody" class="divide-y text-slate-700"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==================== SECTION 5: ADMIN DASHBOARD ==================== -->
+    <section id="adminDashboard" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+        
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-amber-900">👑 ផ្ទាំងគ្រប់គ្រងប្រព័ន្ធ (Admin Control)</h2>
+            <p class="text-xs text-slate-500">គ្រប់គ្រងគ្រូបង្រៀន សិស្ស សំណើ និងមតិកែលម្អ</p>
+          </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="flex border-b mb-6 overflow-x-auto custom-scrollbar gap-2">
+          <button id="admTabTeachers" onclick="switchAdminTab('teachers')" class="py-2.5 px-4 font-bold text-xs border-b-2 border-amber-600 text-amber-700 whitespace-nowrap">🧑‍🏫 គ្រូបង្រៀន</button>
+          <button id="admTabStudents" onclick="switchAdminTab('students')" class="py-2.5 px-4 font-bold text-xs border-b-2 border-transparent text-slate-500 whitespace-nowrap">🧑‍🎓 សិស្សទាំងអស់</button>
+          <button id="admTabRequests" onclick="switchAdminTab('requests')" class="py-2.5 px-4 font-bold text-xs border-b-2 border-transparent text-slate-500 whitespace-nowrap">📩 សំណើភ្លេចគណនី</button>
+          <button id="admTabFeedback" onclick="switchAdminTab('feedback')" class="py-2.5 px-4 font-bold text-xs border-b-2 border-transparent text-slate-500 whitespace-nowrap">💬 មតិកែលម្អ</button>
+        </div>
+
+        <!-- Tab 1: Teachers View -->
+        <div id="admSecTeachers" class="space-y-4">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-amber-50 text-amber-900">
+                <tr>
+                  <th class="p-3">ឈ្មោះគ្រូ</th>
+                  <th class="p-3">សាលា/ថ្នាក់</th>
+                  <th class="p-3">Telegram</th>
+                  <th class="p-3">ចំនួនសិស្ស</th>
+                  <th class="p-3 text-center">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="admTeachersBody" class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Students View -->
+        <div id="admSecStudents" class="hidden space-y-4">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-indigo-50 text-indigo-900">
+                <tr>
+                  <th class="p-3">ឈ្មោះសិស្ស</th>
+                  <th class="p-3">Username</th>
+                  <th class="p-3">សាលា/ថ្នាក់</th>
+                  <th class="p-3 text-center">លំហាត់ធ្វើរួច</th>
+                  <th class="p-3 text-center">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="admStudentsBody" class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Requests View -->
+        <div id="admSecRequests" class="hidden space-y-4">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-rose-50 text-rose-900">
+                <tr>
+                  <th class="p-3">កាលបរិច្ឆេទ</th>
+                  <th class="p-3">ឈ្មោះស្នើសុំ</th>
+                  <th class="p-3">តួនាទី</th>
+                  <th class="p-3">ព័ត៌មានទំនាក់ទំនង</th>
+                  <th class="p-3 text-center">សកម្មភាពឆ្លើយតប</th>
+                </tr>
+              </thead>
+              <tbody id="admRequestsBody" class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 4: Feedback View -->
+        <div id="admSecFeedback" class="hidden space-y-4">
+          <div id="admFeedbackList" class="space-y-3"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MODAL: FORGOT ACCOUNT REQUEST -->
+    <div id="forgotModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <h3 class="text-lg font-bold text-indigo-900">📩 ស្នើសុំស្វែងរកគណនីបាត់ (ភ្លេចគណនី)</h3>
+        <form onsubmit="handleForgotSubmit(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ឈ្មោះពេញរបស់អ្នក *</label>
+            <input type="text" id="fgName" required class="w-full p-2.5 rounded-xl border text-xs outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">តួនាទី *</label>
+            <select id="fgRole" required class="w-full p-2.5 rounded-xl border text-xs">
+              <option value="student">សិស្ស</option>
+              <option value="teacher">គ្រូបង្រៀន</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">លេខទូរស័ព្ទ/Telegram ឬ ព័ត៌មានផ្ទៀងផ្ទាត់ *</label>
+            <input type="text" id="fgContact" required placeholder="ឧ. 012345678 ឬ សាលាបឋមសិក្សា..." class="w-full p-2.5 rounded-xl border text-xs">
+          </div>
+          <div class="flex gap-2 pt-2">
+            <button type="button" onclick="closeForgotModal()" class="flex-1 py-2.5 border rounded-xl text-xs font-bold text-slate-500">បោះបង់</button>
+            <button type="submit" class="flex-1 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold">ផ្ញើសំណើ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: FEEDBACK (មតិកែលម្អ) -->
+    <div id="feedbackModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <h3 class="text-lg font-bold text-purple-900">💬 ផ្ញើមតិកែលម្អរាយការណ៍</h3>
+        <form onsubmit="handleFeedbackSubmit(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ខ្លឹមសារមតិកែលម្អ / ខ្វះចន្លោះ *</label>
+            <textarea id="fbContent" rows="4" required placeholder="រៀបរាប់អំពីចំណុចខ្វះចន្លោះ..." class="w-full p-3 rounded-xl border text-xs outline-none"></textarea>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeFeedbackModal()" class="flex-1 py-2.5 border rounded-xl text-xs font-bold text-slate-500">បោះបង់</button>
+            <button type="submit" class="flex-1 py-2.5 bg-purple-600 text-white rounded-xl text-xs font-bold">ផ្ញើមតិ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: PROFILE & ACCOUNT EDIT -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <h3 class="text-lg font-bold text-slate-800">⚙️ ការកំណត់ និងកែប្រែគណនី</h3>
+        <form onsubmit="handleProfileUpdate(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ឈ្មោះពេញ</label>
+            <input type="text" id="profName" class="w-full p-2.5 rounded-xl border text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">ពាក្យសម្ងាត់ថ្មី (Password)</label>
+            <input type="password" id="profPass" pattern="[0-9]+" placeholder="ទុកទំនេរប្រសិនមិនកែ" class="w-full p-2.5 rounded-xl border text-xs">
+          </div>
+          <div class="flex gap-2 pt-2">
+            <button type="button" onclick="closeProfileModal()" class="flex-1 py-2 text-xs border rounded-xl font-bold">បិទ</button>
+            <button type="submit" class="flex-1 py-2 text-xs bg-indigo-600 text-white rounded-xl font-bold">រក្សាទុក</button>
+          </div>
+        </form>
+        <div class="border-t pt-3">
+          <button onclick="deleteOwnAccount()" class="w-full text-xs text-rose-600 font-bold hover:underline">⚠️ បោះបង់/លុបគណនីនេះចោល</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER NOTICE -->
+  <footer class="mt-8 py-4 bg-slate-200 text-center text-xs text-slate-600 font-bold">
+    <p class="text-rose-600 text-sm mb-1">« តេស្តសាកល្បង សូមអធ្យាស្រ័យ »</p>
+    <p>កម្មវិធីសិក្សាគណិតវិទ្យាថ្នាក់ទី៤ - មេរៀនទី១ ៖ ចំនួន © ២០២៦</p>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // INITIAL ADMIN ACCOUNT (REQUIRED BY SPECIFICATION)
+    const DEFAULT_ADMIN = {
+      username: "Sokchea2004",
+      password: "01012004",
+      name: "សុខជា (អ្នកគ្រប់គ្រងដើម)",
+      role: "admin",
+      gender: "ប្រុស",
+      grade: "៤A",
+      school: "សាលាបឋមសិក្សាវ៉ាត់បូព៌",
+      phone: "01012004",
+      tgUser: "@sokchea2004",
+      isPrimaryAdmin: true
+    };
+
+    // State Variables
+    let currentUser = null;
+    let currentRoleSelection = 'student';
+    let currentAuthTab = 'login';
+    let activeTopic = null;
+    let activeDifficulty = null;
+    let currentQuizQuestions = [];
+    let currentQuestionIndex = 0;
+    let currentScore = 0;
+
+    // Timer Variables
+    let questionTimer = null;
+    let timeLeft = 120; // 2 minutes (120 seconds)
+
+    // Khmer Numbers Utility
+    const khmerDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+    const onesWords = ['', 'មួយ', 'ពីរ', 'បី', 'បួន', 'ប្រាំ', 'ប្រាំមួយ', 'ប្រាំពីរ', 'ប្រាំបី', 'ប្រាំបួន'];
+    const tensWords = ['', 'ដប់', 'ម្ភៃ', 'សាមសិប', 'សែសិប', 'ហាសិប', 'ហុកសិប', 'ចិត្តសិប', 'ប៉ែតសិប', 'កៅសិប'];
+
+    function numberToKhmerText(num) {
+      if (num === 0) return 'សូន្យ';
+      let str = '';
+      let lakh = Math.floor(num / 100000);
+      let rem1 = num % 100000;
+      let tenThous = Math.floor(rem1 / 10000);
+      let rem2 = rem1 % 10000;
+      let thous = Math.floor(rem2 / 1000);
+      let rem3 = rem2 % 1000;
+      let hund = Math.floor(rem3 / 100);
+      let rem4 = rem3 % 100;
+      let ten = Math.floor(rem4 / 10);
+      let one = rem4 % 10;
+
+      if (lakh > 0) str += onesWords[lakh] + 'សែន';
+      if (tenThous > 0) str += onesWords[tenThous] + 'ម៉ឺន';
+      if (thous > 0) str += onesWords[thous] + 'ពាន់';
+      if (hund > 0) str += onesWords[hund] + 'រយ';
+      if (ten > 0) str += tensWords[ten];
+      if (one > 0) str += onesWords[one];
+      return str;
+    }
+
+    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    // -------------------------------------------------------------
+    // STORAGE HELPERS & INIT
+    // -------------------------------------------------------------
+    function initDataStorage() {
+      let users = JSON.parse(localStorage.getItem('m4_users') || '[]');
+      if (!users.some(u => u.username === DEFAULT_ADMIN.username)) {
+        users.push(DEFAULT_ADMIN);
+        localStorage.setItem('m4_users', JSON.stringify(users));
+      }
+    }
+
+    function getStoredUsers() { return JSON.parse(localStorage.getItem('m4_users') || '[]'); }
+    function saveUsers(users) { localStorage.setItem('m4_users', JSON.stringify(users)); }
+    function getStoredScores() { return JSON.parse(localStorage.getItem('m4_scores') || '[]'); }
+    function saveScore(score) {
+      let scores = getStoredScores();
+      scores.push(score);
+      localStorage.setItem('m4_scores', JSON.stringify(scores));
+    }
+    function getStoredRequests() { return JSON.parse(localStorage.getItem('m4_requests') || '[]'); }
+    function saveRequests(reqs) { localStorage.setItem('m4_requests', JSON.stringify(reqs)); }
+    function getStoredFeedback() { return JSON.parse(localStorage.getItem('m4_feedback') || '[]'); }
+    function saveFeedbacks(fbs) { localStorage.setItem('m4_feedback', JSON.stringify(fbs)); }
+
+    // Auto Login Check
+    window.onload = function() {
+      initDataStorage();
+      const savedUser = JSON.parse(localStorage.getItem('m4_session_user') || 'null');
+      if (savedUser) {
+        currentUser = savedUser;
+        loginSuccess();
+      }
+    };
+
+    // -------------------------------------------------------------
+    // AUTHENTICATION LOGIC
+    // -------------------------------------------------------------
+    function chooseRole(role) {
+      currentRoleSelection = role;
+      document.getElementById('roleCard').classList.add('hidden');
+      document.getElementById('authFormCard').classList.remove('hidden');
+
+      const phoneGrp = document.getElementById('phoneGroup');
+      const adminGrp = document.getElementById('adminGroup');
+
+      phoneGrp.classList.add('hidden');
+      adminGrp.classList.add('hidden');
+
+      if (role === 'teacher') {
+        phoneGrp.classList.remove('hidden');
+      } else if (role === 'admin') {
+        phoneGrp.classList.remove('hidden');
+        adminGrp.classList.remove('hidden');
+      }
+      switchAuthTab('login');
+    }
+
+    function backToRoleSelect() {
+      document.getElementById('authFormCard').classList.add('hidden');
+      document.getElementById('roleCard').classList.remove('hidden');
+    }
+
+    function switchAuthTab(tab) {
+      currentAuthTab = tab;
+      const loginForm = document.getElementById('loginForm');
+      const regForm = document.getElementById('regForm');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabRegBtn = document.getElementById('tabRegBtn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLoginBtn.className = "flex-1 py-2 font-bold text-sm border-b-2 border-indigo-600 text-indigo-600";
+        tabRegBtn.className = "flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-600";
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabRegBtn.className = "flex-1 py-2 font-bold text-sm border-b-2 border-indigo-600 text-indigo-600";
+        tabLoginBtn.className = "flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-600";
+      }
+    }
+
+    function autoGenCredentials() {
+      const randNum = randInt(100, 999);
+      document.getElementById('regUsername').value = `${currentRoleSelection}${randNum}`;
+      document.getElementById('regPassword').value = `${randInt(1000, 9999)}`;
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const users = getStoredUsers();
+
+      const username = document.getElementById('regUsername').value.trim();
+      const name = document.getElementById('regName').value.trim();
+
+      // Check if user already exists
+      if (users.some(u => u.username === username || u.name === name)) {
+        alert('❌ អ្នកមិនអាចចុះឈ្មោះលើកទីពីរបានទេ! ប្រសិនបើមានបញ្ហា ឬចង់ចុះឈ្មោះឡើងវិញ សូមទាក់ទងអ្នកគ្រប់គ្រងដើម្បីស្នើសុំ។');
+        return;
+      }
+
+      const newUser = {
+        username: username,
+        password: document.getElementById('regPassword').value.trim(),
+        name: name,
+        role: currentRoleSelection,
+        gender: document.getElementById('regGender').value,
+        grade: document.getElementById('regGrade').value,
+        school: document.getElementById('regSchool').value.trim(),
+        phone: document.getElementById('regPhone').value.trim() || '',
+        tgUser: document.getElementById('regTgUser').value.trim() || '',
+        isPrimaryAdmin: false
+      };
+
+      users.push(newUser);
+      saveUsers(users);
+
+      alert(`✅ ចុះឈ្មោះជោគជ័យ!\nឈ្មោះគណនី៖ ${newUser.username}\nពាក្យសម្ងាត់៖ ${newUser.password}`);
+      currentUser = newUser;
+      localStorage.setItem('m4_session_user', JSON.stringify(currentUser));
+      loginSuccess();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const un = document.getElementById('loginUsername').value.trim();
+      const pw = document.getElementById('loginPassword').value.trim();
+
+      const users = getStoredUsers();
+      const found = users.find(u => u.username === un && u.password === pw && u.role === currentRoleSelection);
+
+      if (found) {
+        currentUser = found;
+        localStorage.setItem('m4_session_user', JSON.stringify(currentUser));
+        loginSuccess();
+      } else {
+        alert('❌ ឈ្មោះគណនី ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ!');
+      }
+    }
+
+    function loginSuccess() {
+      document.getElementById('authSection').classList.add('hidden');
+      const headerInfo = document.getElementById('headerUserInfo');
+      headerInfo.classList.remove('hidden');
+      document.getElementById('navUserName').innerText = currentUser.name;
+      document.getElementById('navUserRole').innerText = `${currentUser.role === 'student' ? 'សិស្ស' : (currentUser.role === 'teacher' ? 'គ្រូបង្រៀន' : 'អ្នកគ្រប់គ្រង')} (${currentUser.school})`;
+
+      if (currentUser.role === 'student') {
+        showStudentDashboard();
+      } else if (currentUser.role === 'teacher') {
+        showTeacherDashboard();
+      } else if (currentUser.role === 'admin') {
+        showAdminDashboard();
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('m4_session_user');
+      document.getElementById('headerUserInfo').classList.add('hidden');
+      hideAllSections();
+      document.getElementById('authSection').classList.remove('hidden');
+      backToRoleSelect();
+    }
+
+    // -------------------------------------------------------------
+    // STUDENT DASHBOARD & QUIZ GENERATOR
+    // -------------------------------------------------------------
+    function showStudentDashboard() {
+      hideAllSections();
+      document.getElementById('studentDashboard').classList.remove('hidden');
+      renderTopicsGrid();
+    }
+
+    function renderTopicsGrid() {
+      const grid = document.getElementById('topicsGrid');
+      grid.innerHTML = '';
+      TOPICS.forEach(topic => {
+        const card = document.createElement('div');
+        card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <span class="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">២០ លំហាត់ (២នាទី/សំណួរ)</span>
+            <h3 class="font-bold text-slate-800 text-sm md:text-base mt-2 mb-1">${topic.title}</h3>
+            <p class="text-xs text-slate-500 mb-4">${topic.desc}</p>
+          </div>
+          <button onclick="openDiffModal(${topic.id})" class="w-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 font-bold py-2.5 rounded-xl text-xs transition border border-indigo-200 hover:border-transparent">
+            ចាប់ផ្តើមលំហាត់
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openDiffModal(topicId) {
+      activeTopic = TOPICS.find(t => t.id === topicId);
+      document.getElementById('modalTopicTitle').innerText = activeTopic.title;
+      document.getElementById('diffModal').classList.remove('hidden');
+    }
+    function closeDiffModal() { document.getElementById('diffModal').classList.add('hidden'); }
+
+    // TIMER LOGIC (2 MINUTES PER QUESTION)
+    function startQuestionTimer() {
+      clearInterval(questionTimer);
+      timeLeft = 120; // 2 minutes
+      updateTimerDisplay();
+
+      questionTimer = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+          clearInterval(questionTimer);
+          alert('⏱️ ផុតកំណត់ ២នាទីហើយ! សំណួរនេះត្រូវចាត់ទុកថាមិនបានពិន្ទុ។');
+          currentQuestionIndex++;
+          renderCurrentQuestion();
         }
+      }, 1000);
+    }
 
-        // ================= TEACHER LOGIC =================
-        function switchTeacherTab(tab) {
-            ['select', 'my', 'feedback'].forEach(t => {
-                document.getElementById(`teacher-tab-${t}`).classList.toggle('hidden', (t === 'select' && tab !== 'select-students') && (t === 'my' && tab !== 'my-students') && (t === 'feedback' && tab !== 'feedback'));
-            });
-        }
+    function updateTimerDisplay() {
+      const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      const s = (timeLeft % 60).toString().padStart(2, '0');
+      document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+    }
 
-        function renderTeacherStudentSelect() {
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS)).filter(u => u.role === 'student');
-            const search = document.getElementById('teacher-search-school').value.toLowerCase();
-            const tbody = document.getElementById('teacher-student-select-list');
+    function startQuiz(diff) {
+      closeDiffModal();
+      activeDifficulty = diff;
+      currentQuizQuestions = generateTopicQuestions(activeTopic.id, diff);
+      currentQuestionIndex = 0;
+      currentScore = 0;
 
-            const filtered = users.filter(u => u.fullname.toLowerCase().includes(search) || u.school.toLowerCase().includes(search));
+      hideAllSections();
+      document.getElementById('quizArena').classList.remove('hidden');
 
-            tbody.innerHTML = filtered.map(s => {
-                const isChecked = (currentUser.selectedStudents || []).includes(s.id);
-                return `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="p-3"><input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSelectStudent('${s.id}')"></td>
-                        <td class="p-3 font-bold">${s.fullname}</td>
-                        <td class="p-3">${s.gender}</td>
-                        <td class="p-3">${s.grade}</td>
-                        <td class="p-3 text-emerald-700 font-semibold">${s.school}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
+      document.getElementById('quizTopicTitle').innerText = activeTopic.title;
+      const badge = document.getElementById('quizDiffBadge');
+      badge.innerText = diff === 'easy' ? 'ងាយស្រួល' : (diff === 'medium' ? 'មធ្យម' : 'លំបាក');
 
-        function toggleSelectStudent(sId) {
-            if (!currentUser.selectedStudents) currentUser.selectedStudents = [];
-            const idx = currentUser.selectedStudents.indexOf(sId);
-            if (idx > -1) currentUser.selectedStudents.splice(idx, 1);
-            else currentUser.selectedStudents.push(sId);
+      renderCurrentQuestion();
+    }
 
-            // Update in DB
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            const uIdx = users.findIndex(u => u.id === currentUser.id);
-            if (uIdx > -1) {
-                users[uIdx].selectedStudents = currentUser.selectedStudents;
-                localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
-                localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
+    function renderCurrentQuestion() {
+      if (currentQuestionIndex >= 20) {
+        clearInterval(questionTimer);
+        finishQuiz();
+        return;
+      }
+
+      startQuestionTimer();
+
+      const q = currentQuizQuestions[currentQuestionIndex];
+      document.getElementById('qCurrentNum').innerText = currentQuestionIndex + 1;
+      document.getElementById('qDisplayIndex').innerText = currentQuestionIndex + 1;
+      document.getElementById('qCurrentScore').innerText = currentScore;
+      
+      const acc = currentQuestionIndex === 0 ? 100 : Math.round((currentScore / currentQuestionIndex) * 100);
+      document.getElementById('qAccuracy').innerText = `${acc}%`;
+
+      document.getElementById('qText').innerText = q.qText;
+
+      const grid = document.getElementById('qOptionsGrid');
+      grid.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "p-4 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-400 font-bold rounded-xl text-xs md:text-sm text-slate-700 transition flex items-center justify-center text-center leading-relaxed";
+        btn.innerText = opt;
+        btn.onclick = () => {
+          clearInterval(questionTimer);
+          if (opt === q.answer) currentScore++;
+          currentQuestionIndex++;
+          renderCurrentQuestion();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function quitQuiz() {
+      if (confirm('តើអ្នកពិតជាចង់ចាកចេញមែនទេ?')) {
+        clearInterval(questionTimer);
+        showStudentDashboard();
+      }
+    }
+
+    function finishQuiz() {
+      const accuracy = Math.round((currentScore / 20) * 100);
+      saveScore({
+        studentUsername: currentUser.username,
+        studentName: currentUser.name,
+        school: currentUser.school,
+        topicTitle: activeTopic.title,
+        difficulty: activeDifficulty,
+        score: currentScore,
+        accuracy: accuracy,
+        date: new Date().toLocaleDateString('km-KH')
+      });
+
+      hideAllSections();
+      document.getElementById('resultSection').classList.remove('hidden');
+      document.getElementById('resultTopicName').innerText = activeTopic.title;
+      document.getElementById('resFinalScore').innerText = `${currentScore} / 20`;
+      document.getElementById('resAccuracy').innerText = `${accuracy}%`;
+    }
+
+    function restartCurrentQuiz() { startQuiz(activeDifficulty); }
+
+    // -------------------------------------------------------------
+    // QUESTION GENERATOR IMPLEMENTATION
+    // -------------------------------------------------------------
+    function generateTopicQuestions(topicId, difficulty) {
+      const questions = [];
+      let min = 1000, max = 9999;
+      if (difficulty === 'medium') { min = 10000; max = 50000; }
+      if (difficulty === 'hard') { min = 50000; max = 99999; }
+
+      for (let i = 0; i < 20; i++) {
+        let qText = '', answer = '', options = [];
+        const num = randInt(min, max);
+
+        switch(topicId) {
+          case 1:
+            qText = `ចំនួន ${num.toLocaleString()} អានថា ៖`;
+            answer = numberToKhmerText(num);
+            options = [answer];
+            while (options.length < 4) {
+              let w = numberToKhmerText(num + randInt(-5, 5) * 10);
+              if (w !== answer && !options.includes(w)) options.push(w);
             }
-            renderTeacherMyStudents();
-        }
+            break;
 
-        function renderTeacherMyStudents() {
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            const scores = JSON.parse(localStorage.getItem(DB_KEY_SCORES));
-            const selectedIds = currentUser.selectedStudents || [];
-            const tbody = document.getElementById('teacher-my-students-list');
-
-            const myStudents = users.filter(u => selectedIds.includes(u.id));
-
-            if (myStudents.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">មិនទាន់បានជ្រើសរើសសិស្សនៅឡើយ</td></tr>`;
-                return;
+          case 2:
+            qText = `«${numberToKhmerText(num)}» ចម្លើយ ៖`;
+            answer = `ចំនួន ${num.toLocaleString()}`;
+            options = [answer];
+            while (options.length < 4) {
+              let w = `ចំនួន ${(num + randInt(-5, 5) * 100).toLocaleString()}`;
+              if (!options.includes(w)) options.push(w);
             }
+            break;
 
-            tbody.innerHTML = myStudents.map(s => {
-                const stScores = scores.filter(sc => sc.studentId === s.id);
-                const totalScore = stScores.reduce((acc, curr) => acc + curr.score, 0);
-                return `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="p-3 font-bold text-slate-800">${s.fullname}</td>
-                        <td class="p-3 text-gray-600">${s.school}</td>
-                        <td class="p-3">${stScores.length} ដង</td>
-                        <td class="p-3 font-bold text-emerald-600">${totalScore} ពិន្ទុ</td>
-                        <td class="p-3"><button onclick="viewStudentDetails('${s.id}')" class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded">មើលលម្អិត</button></td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function viewStudentDetails(studentId) {
-            const scores = JSON.parse(localStorage.getItem(DB_KEY_SCORES)).filter(s => s.studentId === studentId);
-            if (scores.length === 0) {
-                alert('សិស្សនេះមិនទាន់មានប្រវត្តិធ្វើលំហាត់នៅឡើយទេ');
-                return;
+          case 3:
+            let step = randInt(1, 5) * 1000;
+            let seq = [num, num + step, num + step * 2, num + step * 3];
+            let blank = randInt(1, 2);
+            answer = seq[blank].toLocaleString();
+            seq[blank] = '...';
+            qText = `បំពេញលំនាំ៖ ${seq.map(n => typeof n === 'number' ? n.toLocaleString() : n).join(', ')}`;
+            options = [answer];
+            while (options.length < 4) {
+              let w = (num + randInt(1, 5) * step).toLocaleString();
+              if (!options.includes(w)) options.push(w);
             }
-            let msg = scores.map(s => `• ${s.topicName} (${s.level}): ${s.score}/20 [${s.date}]`).join('\n');
-            alert(`ប្រវត្តិធ្វើលំហាត់៖\n${msg}`);
-        }
+            break;
 
-        // ================= ADMIN LOGIC =================
-        function switchAdminTab(tab) {
-            ['teachers', 'students', 'requests', 'feedback'].forEach(t => {
-                document.getElementById(`admin-tab-${t}`).classList.toggle('hidden', t !== tab);
-            });
-        }
+          case 4:
+            let str = num.toString();
+            let pos = randInt(0, str.length - 1);
+            let digit = str[pos];
+            let places = ['រាយ', 'ដប់', 'រយ', 'ពាន់', 'ម៉ឺន'];
+            let placeName = places[str.length - 1 - pos] || 'ម៉ឺន';
+            qText = `ចំនួន ${num.toLocaleString()} លេខ ${digit} នៅខ្ទង់ ៖`;
+            answer = placeName;
+            options = ['រាយ', 'ដប់', 'រយ', 'ពាន់', 'ម៉ឺន'].slice(0, 4);
+            if (!options.includes(answer)) options[0] = answer;
+            break;
 
-        function renderAdminTeachers() {
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            const teachers = users.filter(u => u.role === 'teacher');
-            const tbody = document.getElementById('admin-teachers-list');
-
-            tbody.innerHTML = teachers.map(t => {
-                const countStudents = (t.selectedStudents || []).length;
-                return `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="p-3 font-bold text-slate-800">${t.fullname} ${t.isNextAdmin ? '⭐ (Admin បន្ទាប់)' : ''}</td>
-                        <td class="p-3 text-indigo-600">${t.phone || '-'}</td>
-                        <td class="p-3 text-gray-600">${t.school}</td>
-                        <td class="p-3 font-bold">${countStudents} នាក់</td>
-                        <td class="p-3 space-x-1">
-                            <button onclick="setNextAdmin('${t.id}')" class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded">តាំងជា Admin បន្ទាប់</button>
-                            <button onclick="adminDeleteUser('${t.id}')" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">លុប</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function setNextAdmin(userId) {
-            if (currentUser.username !== 'Sokchea2004') {
-                alert('មានតែលោក ហឿន សុខជា (Super Admin) ប៉ុណ្ណោះ ដែលអាចកំណត់អ្នកគ្រប់គ្រងបន្ទាប់បាន!');
-                return;
+          case 5:
+            let s5 = num.toString();
+            let p5 = randInt(0, s5.length - 1);
+            let d5 = parseInt(s5[p5]);
+            let val5 = d5 * Math.pow(10, s5.length - 1 - p5);
+            qText = `ចំនួន ${num.toLocaleString()} លេខ ${d5} មានតម្លៃ ៖`;
+            answer = val5.toLocaleString();
+            options = [answer];
+            while (options.length < 4) {
+              let w = (d5 * Math.pow(10, randInt(0, 4))).toLocaleString();
+              if (!options.includes(w)) options.push(w);
             }
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            users.forEach(u => u.isNextAdmin = (u.id === userId));
-            localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
-            alert('បានតាំងអ្នកគ្រប់គ្រងបន្ទាប់រួចរាល់!');
-            renderAdminTeachers();
-        }
+            break;
 
-        function renderAdminStudents() {
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS)).filter(u => u.role === 'student');
-            const scores = JSON.parse(localStorage.getItem(DB_KEY_SCORES));
-            const tbody = document.getElementById('admin-students-list');
-
-            tbody.innerHTML = users.map(s => {
-                const stScores = scores.filter(sc => sc.studentId === s.id);
-                const total = stScores.reduce((acc, c) => acc + c.score, 0);
-                return `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="p-3 font-bold">${s.fullname}</td>
-                        <td class="p-3 text-gray-500">${s.username}</td>
-                        <td class="p-3">${s.school}</td>
-                        <td class="p-3 font-bold text-amber-600">${total} ពិន្ទុ</td>
-                        <td class="p-3">
-                            <button onclick="adminDeleteUser('${s.id}')" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">លុប</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function adminDeleteUser(userId) {
-            if (!confirm('តើអ្នកប្រាកដថាលុបគណនីនេះ?')) return;
-            let users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            users = users.filter(u => u.id !== userId);
-            localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
-            renderAdminTeachers();
-            renderAdminStudents();
-        }
-
-        // ================= FORGOT PASSWORD & REQUESTS =================
-        function showForgotModal() { document.getElementById('modal-forgot').classList.remove('hidden'); }
-        function closeForgotModal() { document.getElementById('modal-forgot').classList.add('hidden'); }
-
-        function submitForgotRequest() {
-            const name = document.getElementById('forgot-name').value;
-            const school = document.getElementById('forgot-school').value;
-            if (!name || !school) return alert('សូមបំពេញព័ត៌មានឱ្យគ្រប់');
-
-            const reqs = JSON.parse(localStorage.getItem(DB_KEY_REQUESTS));
-            reqs.push({
-                id: 'req_' + Date.now(),
-                name: name,
-                school: school,
-                status: 'pending',
-                date: new Date().toLocaleDateString('km-KH')
-            });
-            localStorage.setItem(DB_KEY_REQUESTS, JSON.stringify(reqs));
-            alert('សំណើត្រូវបានផ្ញើទៅកាន់ អ្នកគ្រប់គ្រង (Admin) រួចរាល់!');
-            closeForgotModal();
-        }
-
-        function renderAdminRequests() {
-            const reqs = JSON.parse(localStorage.getItem(DB_KEY_REQUESTS));
-            const box = document.getElementById('admin-requests-list');
-            if (reqs.length === 0) {
-                box.innerHTML = `<p class="text-gray-400 text-sm">មិនទាន់មានសំណើឡើយ</p>`;
-                return;
+          case 6:
+            let s6 = num.toString();
+            let pts = [];
+            for (let k = 0; k < s6.length; k++) {
+              let d = parseInt(s6[k]);
+              if (d > 0) pts.push((d * Math.pow(10, s6.length - 1 - k)).toLocaleString());
             }
-            box.innerHTML = reqs.map(r => `
-                <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-slate-800">សំណើពី៖ ${r.name} (${r.school})</p>
-                        <p class="text-xs text-gray-500">កាលបរិច្ឆេទ៖ ${r.date}</p>
-                    </div>
-                    <button onclick="resolveRequest('${r.id}')" class="bg-amber-600 text-white text-xs px-3 py-1.5 rounded">ឆ្លើយតប/ដោះស្រាយ</button>
-                </div>
-            `).join('');
-        }
-
-        function resolveRequest(reqId) {
-            let reqs = JSON.parse(localStorage.getItem(DB_KEY_REQUESTS));
-            reqs = reqs.filter(r => r.id !== reqId);
-            localStorage.setItem(DB_KEY_REQUESTS, JSON.stringify(reqs));
-            alert('បានដោះស្រាយសំណើ!');
-            renderAdminRequests();
-        }
-
-        // ================= FEEDBACK CHAT SYSTEM =================
-        function sendFeedback() {
-            let txt = '';
-            if (currentUser.role === 'student') txt = document.getElementById('student-fb-text').value;
-            else if (currentUser.role === 'teacher') txt = document.getElementById('teacher-fb-text').value;
-
-            if (!txt.trim()) return alert('សូមបញ្ចូលមតិកែលម្អ');
-
-            const fbs = JSON.parse(localStorage.getItem(DB_KEY_FEEDBACK));
-            fbs.push({
-                id: 'fb_' + Date.now(),
-                userId: currentUser.id,
-                userName: currentUser.fullname,
-                userRole: currentUser.role,
-                message: txt,
-                reply: '',
-                date: new Date().toLocaleDateString('km-KH')
-            });
-            localStorage.setItem(DB_KEY_FEEDBACK, JSON.stringify(fbs));
-            alert('មតិកែលម្អត្រូវបានផ្ញើ!');
-            if (currentUser.role === 'student') { document.getElementById('student-fb-text').value = ''; renderStudentFeedbackResponses(); }
-            if (currentUser.role === 'teacher') { document.getElementById('teacher-fb-text').value = ''; renderTeacherFeedbackResponses(); }
-        }
-
-        function renderStudentFeedbackResponses() {
-            const fbs = JSON.parse(localStorage.getItem(DB_KEY_FEEDBACK)).filter(f => f.userId === currentUser.id);
-            const box = document.getElementById('student-fb-responses');
-            box.innerHTML = fbs.map(f => `
-                <div class="p-3 bg-slate-50 border rounded-lg text-sm space-y-1">
-                    <p class="font-semibold text-slate-700">ខ្ញុំ៖ ${f.message}</p>
-                    ${f.reply ? `<p class="text-indigo-600 bg-indigo-50 p-2 rounded text-xs">💬 ឆ្លើយតបពី Admin: ${f.reply}</p>` : `<span class="text-xs text-gray-400">កំពុងរង់ចាំការឆ្លើយតប...</span>`}
-                </div>
-            `).join('');
-        }
-
-        function renderTeacherFeedbackResponses() {
-            const fbs = JSON.parse(localStorage.getItem(DB_KEY_FEEDBACK)).filter(f => f.userId === currentUser.id);
-            const box = document.getElementById('teacher-fb-responses');
-            box.innerHTML = fbs.map(f => `
-                <div class="p-3 bg-slate-50 border rounded-lg text-sm space-y-1">
-                    <p class="font-semibold text-slate-700">ខ្ញុំ៖ ${f.message}</p>
-                    ${f.reply ? `<p class="text-emerald-600 bg-emerald-50 p-2 rounded text-xs">💬 ឆ្លើយតបពី Admin: ${f.reply}</p>` : `<span class="text-xs text-gray-400">កំពុងរង់ចាំការឆ្លើយតប...</span>`}
-                </div>
-            `).join('');
-        }
-
-        function renderAdminFeedback() {
-            const fbs = JSON.parse(localStorage.getItem(DB_KEY_FEEDBACK));
-            const box = document.getElementById('admin-feedback-list');
-            box.innerHTML = fbs.map(f => `
-                <div class="p-4 bg-slate-50 border rounded-lg space-y-2 text-sm">
-                    <div class="flex justify-between font-bold text-slate-800">
-                        <span>${f.userName} (${f.userRole})</span>
-                        <span class="text-xs font-normal text-gray-500">${f.date}</span>
-                    </div>
-                    <p class="text-gray-700">${f.message}</p>
-                    <div class="flex items-center space-x-2 pt-2">
-                        <input type="text" id="reply-input-${f.id}" value="${f.reply}" placeholder="សរសេរការឆ្លើយតប..." class="flex-1 p-2 border rounded text-xs">
-                        <button onclick="adminReplyFeedback('${f.id}')" class="bg-indigo-600 text-white text-xs px-3 py-2 rounded">ឆ្លើយតប</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function adminReplyFeedback(fbId) {
-            const replyTxt = document.getElementById(`reply-input-${fbId}`).value;
-            const fbs = JSON.parse(localStorage.getItem(DB_KEY_FEEDBACK));
-            const fb = fbs.find(f => f.id === fbId);
-            if (fb) {
-                fb.reply = replyTxt;
-                localStorage.setItem(DB_KEY_FEEDBACK, JSON.stringify(fbs));
-                alert('បានឆ្លើយតបមតិកែលម្អ!');
-                renderAdminFeedback();
+            qText = `${num.toLocaleString()} = ? (ទម្រង់ពង្រាយ)`;
+            answer = pts.join(' + ');
+            options = [answer];
+            while (options.length < 4) {
+              let fake = pts.map((p, idx) => idx === 0 ? p : (parseInt(p.replace(/,/g, '')) + 10).toLocaleString()).join(' + ');
+              if (!options.includes(fake)) options.push(fake);
             }
+            break;
+
+          case 7:
+            let n2 = num + randInt(-2, 2) * 50;
+            answer = num > n2 ? '>' : (num < n2 ? '<' : '=');
+            qText = `${num.toLocaleString()}  ______  ${n2.toLocaleString()}`;
+            options = ['>', '<', '='];
+            break;
+
+          case 8:
+            let arr = [num, num + 150, num - 80, num + 400].sort(() => Math.random() - 0.5);
+            let sorted = [...arr].sort((a, b) => a - b).map(n => n.toLocaleString()).join(', ');
+            qText = `រៀបលំដាប់ពីតូចទៅធំ៖ ${arr.map(n => n.toLocaleString()).join(', ')}`;
+            answer = sorted;
+            options = [answer];
+            while (options.length < 4) {
+              let w = [...arr].sort(() => Math.random() - 0.5).map(n => n.toLocaleString()).join(', ');
+              if (!options.includes(w)) options.push(w);
+            }
+            break;
+
+          case 9:
+            let d9 = [randInt(1, 9), randInt(1, 9), randInt(0, 9), randInt(1, 9)];
+            let isMax = Math.random() > 0.5;
+            let s9 = isMax ? [...d9].sort((a, b) => b - a) : [...d9].sort((a, b) => a - b);
+            qText = `បង្កើតចំនួន «${isMax ? 'ធំបំផុត' : 'តូចបំផុត'}» ពីលេខ៖ ${d9.join(', ')}`;
+            answer = parseInt(s9.join('')).toLocaleString();
+            options = [answer];
+            while (options.length < 4) {
+              let w = parseInt([...d9].sort(() => Math.random() - 0.5).join('')).toLocaleString();
+              if (!options.includes(w)) options.push(w);
+            }
+            break;
+
+          case 10:
+            let p10 = [10, 100, 1000][randInt(0, 2)];
+            let rnd = Math.round(num / p10) * p10;
+            qText = `បង្គត់ចំនួន ${num.toLocaleString()} ត្រឹមខ្ទង់${p10 === 10 ? 'ដប់' : (p10 === 100 ? 'រយ' : 'ពាន់')} ៖`;
+            answer = rnd.toLocaleString();
+            options = [answer];
+            while (options.length < 4) {
+              let w = (rnd + randInt(-2, 2) * p10).toLocaleString();
+              if (!options.includes(w) && w !== '0') options.push(w);
+            }
+            break;
         }
 
-        // ================= PROFILE EDIT & DELETE =================
-        function editProfile() {
-            document.getElementById('edit-fullname').value = currentUser.fullname;
-            document.getElementById('edit-school').value = currentUser.school;
-            document.getElementById('modal-profile').classList.remove('hidden');
-        }
+        options = options.sort(() => Math.random() - 0.5);
+        questions.push({ qText, answer, options });
+      }
 
-        function closeProfileModal() {
-            document.getElementById('modal-profile').classList.add('hidden');
-        }
+      return questions;
+    }
 
-        function saveProfile(e) {
-            e.preventDefault();
-            currentUser.fullname = document.getElementById('edit-fullname').value;
-            currentUser.school = document.getElementById('edit-school').value;
-            const pw = document.getElementById('edit-password').value;
-            if (pw) currentUser.password = pw;
+    // -------------------------------------------------------------
+    // STUDENT HISTORY VIEW
+    // -------------------------------------------------------------
+    function showStudentHistory() {
+      hideAllSections();
+      document.getElementById('studentHistorySection').classList.remove('hidden');
+      const scores = getStoredScores().filter(s => s.studentUsername === currentUser.username);
+      const tbody = document.getElementById('studentHistoryBody');
+      tbody.innerHTML = '';
+      if (scores.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">មិនទាន់មានទិន្នន័យ</td></tr>`;
+        return;
+      }
+      scores.reverse().forEach(s => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-3">${s.date}</td>
+            <td class="p-3 font-bold">${s.topicTitle}</td>
+            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100">${s.difficulty}</span></td>
+            <td class="p-3 text-center font-bold text-indigo-600">${s.score}</td>
+            <td class="p-3 text-center font-bold text-emerald-600">${s.accuracy}%</td>
+          </tr>
+        `;
+      });
+    }
 
-            const users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            const idx = users.findIndex(u => u.id === currentUser.id);
-            if (idx > -1) users[idx] = currentUser;
+    // -------------------------------------------------------------
+    // TEACHER DASHBOARD LOGIC
+    // -------------------------------------------------------------
+    function showTeacherDashboard() {
+      hideAllSections();
+      document.getElementById('teacherDashboard').classList.remove('hidden');
+      document.getElementById('teacherSchoolName').innerText = currentUser.school;
 
-            localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
-            localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-            alert('រក្សាទុកការកែប្រែជោគជ័យ!');
-            closeProfileModal();
-            launchUserDashboard();
-        }
+      const students = getStoredUsers().filter(u => u.role === 'student');
+      const select = document.getElementById('teacherStudentSelect');
+      select.innerHTML = '<option value="">-- ជ្រើសរើសសិស្សដើម្បីមើលព័ត៌មាន --</option>';
+      students.forEach(st => {
+        select.innerHTML += `<option value="${st.username}">${st.name} (${st.school} - ថ្នាក់ទី ${st.grade})</option>`;
+      });
+    }
 
-        function deleteAccount() {
-            if (!confirm('តើអ្នកពិតជាចង់បោះបង់/លុបគណនីនេះមែនទេ? ទិន្នន័យទាំងអស់នឹងត្រូវបាត់បង់!')) return;
-            let users = JSON.parse(localStorage.getItem(DB_KEY_USERS));
-            users = users.filter(u => u.id !== currentUser.id);
-            localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
-            logout();
-        }
-    </script>
+    function loadTeacherSelectedStudentData() {
+      const un = document.getElementById('teacherStudentSelect').value;
+      const area = document.getElementById('selectedStudentDataArea');
+      if (!un) { area.classList.add('hidden'); return; }
+
+      const st = getStoredUsers().find(u => u.username === un);
+      const scores = getStoredScores().filter(s => s.studentUsername === un);
+
+      document.getElementById('tStName').innerText = st.name;
+      document.getElementById('tStGrade').innerText = `${st.grade} (${st.gender})`;
+      document.getElementById('tStSchool').innerText = st.school;
+
+      const tbody = document.getElementById('tStHistoryBody');
+      tbody.innerHTML = '';
+      if (scores.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-400">សិស្សនេះមិនទាន់បានធ្វើលំហាត់នៅឡើយទេ</td></tr>`;
+      } else {
+        scores.reverse().forEach(s => {
+          tbody.innerHTML += `
+            <tr>
+              <td class="p-2">${s.date}</td>
+              <td class="p-2 font-bold">${s.topicTitle}</td>
+              <td class="p-2 text-center">${s.difficulty}</td>
+              <td class="p-2 text-center font-bold text-indigo-600">${s.score}</td>
+              <td class="p-2 text-center font-bold text-emerald-600">${s.accuracy}%</td>
+            </tr>
+          `;
+        });
+      }
+      area.classList.remove('hidden');
+    }
+
+    // -------------------------------------------------------------
+    // ADMIN DASHBOARD LOGIC
+    // -------------------------------------------------------------
+    function showAdminDashboard() {
+      hideAllSections();
+      document.getElementById('adminDashboard').classList.remove('hidden');
+      switchAdminTab('teachers');
+    }
+
+    function switchAdminTab(tab) {
+      const tabNames = ['Teachers', 'Students', 'Requests', 'Feedback'];
+      tabNames.forEach(t => {
+        const sec = document.getElementById(`admSec${t}`);
+        const btn = document.getElementById(`admTab${t}`);
+        if (sec) sec.classList.add('hidden');
+        if (btn) btn.className = "py-2.5 px-4 font-bold text-xs border-b-2 border-transparent text-slate-500 whitespace-nowrap";
+      });
+
+      const key = tab.charAt(0).toUpperCase() + tab.slice(1);
+      const activeSec = document.getElementById(`admSec${key}`);
+      const activeBtn = document.getElementById(`admTab${key}`);
+
+      if (activeSec) activeSec.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = "py-2.5 px-4 font-bold text-xs border-b-2 border-amber-600 text-amber-700 whitespace-nowrap";
+
+      if (tab === 'teachers') renderAdminTeachers();
+      if (tab === 'students') renderAdminStudents();
+      if (tab === 'requests') renderAdminRequests();
+      if (tab === 'feedback') renderAdminFeedback();
+    }
+
+    function renderAdminTeachers() {
+      const teachers = getStoredUsers().filter(u => u.role === 'teacher');
+      const students = getStoredUsers().filter(u => u.role === 'student');
+      const tbody = document.getElementById('admTeachersBody');
+      tbody.innerHTML = '';
+
+      teachers.forEach(t => {
+        const stCount = students.filter(s => s.school === t.school && s.grade === t.grade).length;
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-3 font-bold">${t.name} ${t.isPrimaryAdmin ? '⭐' : ''}</td>
+            <td class="p-3">${t.school} (ថ្នាក់ ${t.grade})</td>
+            <td class="p-3">${t.phone} (${t.tgUser || '-'})</td>
+            <td class="p-3 font-bold text-indigo-600">${stCount} នាក់</td>
+            <td class="p-3 text-center space-x-1">
+              <button onclick="setNextAdmin('${t.username}')" class="text-[10px] bg-amber-100 text-amber-800 px-2 py-1 rounded font-bold">តម្លើងជា Admin</button>
+              <button onclick="adminDeleteUser('${t.username}')" class="text-[10px] bg-rose-100 text-rose-800 px-2 py-1 rounded font-bold">លុប</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderAdminStudents() {
+      const students = getStoredUsers().filter(u => u.role === 'student');
+      const scores = getStoredScores();
+      const tbody = document.getElementById('admStudentsBody');
+      tbody.innerHTML = '';
+
+      students.forEach(s => {
+        const done = scores.filter(sc => sc.studentUsername === s.username).length;
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-3 font-bold">${s.name}</td>
+            <td class="p-3 font-mono text-xs">${s.username}</td>
+            <td class="p-3">${s.school} (ថ្នាក់ ${s.grade})</td>
+            <td class="p-3 text-center font-bold text-indigo-600">${done} លើក</td>
+            <td class="p-3 text-center">
+              <button onclick="adminDeleteUser('${s.username}')" class="text-[10px] bg-rose-100 text-rose-800 px-2 py-1 rounded font-bold">លុប</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderAdminRequests() {
+      const reqs = getStoredRequests();
+      const tbody = document.getElementById('admRequestsBody');
+      tbody.innerHTML = '';
+
+      if (reqs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-400">គ្មានសំណើថ្មីទេ</td></tr>`;
+        return;
+      }
+
+      reqs.forEach((r, idx) => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-3">${r.date}</td>
+            <td class="p-3 font-bold">${r.name}</td>
+            <td class="p-3">${r.role === 'student' ? 'សិស្ស' : 'គ្រូបង្រៀន'}</td>
+            <td class="p-3">${r.contact}</td>
+            <td class="p-3 text-center">
+              <button onclick="resolveRequest(${idx})" class="text-[10px] bg-emerald-600 text-white px-3 py-1 rounded-xl font-bold">ឆ្លើយតប</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function resolveRequest(idx) {
+      const reqs = getStoredRequests();
+      const r = reqs[idx];
+
+      if (r.role === 'student') {
+        alert(`✅ បានឆ្លើយតបសំណើ! គណនីសិស្ស «${r.name}» ត្រូវ​បានកំណត់ និងបើកសិទ្ធិឱ្យចូលប្រព័ន្ធឡើងវិញដោយស្វ័យប្រវត្តិ។`);
+      } else {
+        alert(`📱 បានផ្ញើចម្លើយតបតាម Telegram៖\nលេខទូរស័ព្ទ/Telegram: ${r.contact}\nផ្ញើ Username & Password រួចរាល់។`);
+      }
+
+      reqs.splice(idx, 1);
+      saveRequests(reqs);
+      renderAdminRequests();
+    }
+
+    function renderAdminFeedback() {
+      const fbs = getStoredFeedback();
+      const list = document.getElementById('admFeedbackList');
+      list.innerHTML = '';
+
+      if (fbs.length === 0) {
+        list.innerHTML = `<p class="text-center text-xs text-slate-400 py-4">គ្មានមតិកែលម្អនៅឡើយទេ</p>`;
+        return;
+      }
+
+      fbs.forEach((f, idx) => {
+        list.innerHTML += `
+          <div class="bg-slate-50 p-4 rounded-xl border space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="font-bold text-indigo-700">${f.authorName} (${f.role})</span>
+              <span class="text-slate-400">${f.date}</span>
+            </div>
+            <p class="text-xs text-slate-800">${f.content}</p>
+            ${f.reply ? `<div class="bg-purple-100 p-2.5 rounded-lg text-xs text-purple-900"><strong>ចម្លើយតប Admin:</strong> ${f.reply}</div>` : `
+              <div class="flex gap-2 pt-1">
+                <input type="text" id="fbReplyInput_${idx}" placeholder="សរសេរចម្លើយតប..." class="flex-1 px-3 py-1.5 border rounded-xl text-xs">
+                <button onclick="replyFeedback(${idx})" class="bg-purple-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">ផ្ញើចម្លើយ</button>
+              </div>
+            `}
+          </div>
+        `;
+      });
+    }
+
+    function replyFeedback(idx) {
+      const fbs = getStoredFeedback();
+      const val = document.getElementById(`fbReplyInput_${idx}`).value.trim();
+      if (!val) return;
+
+      fbs[idx].reply = val;
+      saveFeedbacks(fbs);
+      renderAdminFeedback();
+    }
+
+    function setNextAdmin(username) {
+      if (currentUser.username !== DEFAULT_ADMIN.username) {
+        alert('❌ មានតែអ្នកគ្រប់គ្រងដើម (Sokchea2004) ប៉ុណ្ណោះ ដែលមានសិទ្ធិកំណត់ Admin បន្ទាប់!');
+        return;
+      }
+      const users = getStoredUsers();
+      const target = users.find(u => u.username === username);
+      if (target) {
+        target.role = 'admin';
+        saveUsers(users);
+        alert(`✅ បានតម្លើង «${target.name}» ជាអ្នកគ្រប់គ្រងបន្ទាប់រួចរាល់!`);
+        renderAdminTeachers();
+      }
+    }
+
+    function adminDeleteUser(username) {
+      if (confirm(`តើអ្នកពិតជាចង់លុបគណនី ${username} នេះមែនទេ?`)) {
+        let users = getStoredUsers().filter(u => u.username !== username);
+        saveUsers(users);
+        renderAdminTeachers();
+        renderAdminStudents();
+      }
+    }
+
+    // -------------------------------------------------------------
+    // MODALS HANDLING (FORGOT, FEEDBACK, PROFILE)
+    // -------------------------------------------------------------
+    function showForgotModal() { document.getElementById('forgotModal').classList.remove('hidden'); }
+    function closeForgotModal() { document.getElementById('forgotModal').classList.add('hidden'); }
+
+    function handleForgotSubmit(e) {
+      e.preventDefault();
+      const reqs = getStoredRequests();
+      reqs.push({
+        name: document.getElementById('fgName').value.trim(),
+        role: document.getElementById('fgRole').value,
+        contact: document.getElementById('fgContact').value.trim(),
+        date: new Date().toLocaleDateString('km-KH')
+      });
+      saveRequests(reqs);
+      alert('✅ បានផ្ញើសំណើទៅកាន់អ្នកគ្រប់គ្រងរួចរាល់! សូមរង់ចាំការផ្ទៀងផ្ទាត់។');
+      closeForgotModal();
+    }
+
+    function openFeedbackModal() { document.getElementById('feedbackModal').classList.remove('hidden'); }
+    function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
+
+    function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      const fbs = getStoredFeedback();
+      fbs.push({
+        authorName: currentUser.name,
+        role: currentUser.role,
+        content: document.getElementById('fbContent').value.trim(),
+        date: new Date().toLocaleDateString('km-KH'),
+        reply: ''
+      });
+      saveFeedbacks(fbs);
+      alert('✅ អរគុណសម្រាប់ការផ្តល់មតិកែលម្អ!');
+      closeFeedbackModal();
+    }
+
+    function openProfileModal() {
+      document.getElementById('profName').value = currentUser.name;
+      document.getElementById('profileModal').classList.remove('hidden');
+    }
+    function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
+
+    function handleProfileUpdate(e) {
+      e.preventDefault();
+      const users = getStoredUsers();
+      const me = users.find(u => u.username === currentUser.username);
+      if (me) {
+        me.name = document.getElementById('profName').value.trim();
+        const p = document.getElementById('profPass').value.trim();
+        if (p) me.password = p;
+
+        saveUsers(users);
+        currentUser = me;
+        localStorage.setItem('m4_session_user', JSON.stringify(currentUser));
+        alert('✅ រក្សាទុកព័ត៌មានថ្មីរួចរាល់!');
+        closeProfileModal();
+        loginSuccess();
+      }
+    }
+
+    function deleteOwnAccount() {
+      if (confirm('⚠️ តើអ្នកពិតជាចង់លុប/បោះបង់គណនីផ្ទាល់ខ្លួននេះចោលមែនទេ?')) {
+        let users = getStoredUsers().filter(u => u.username !== currentUser.username);
+        saveUsers(users);
+        closeProfileModal();
+        logout();
+      }
+    }
+
+    function hideAllSections() {
+      ['authSection', 'studentDashboard', 'quizArena', 'resultSection', 'studentHistorySection', 'teacherDashboard', 'adminDashboard'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+    }
+  </script>
 </body>
 </html>
