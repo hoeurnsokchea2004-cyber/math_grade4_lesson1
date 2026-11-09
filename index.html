@@ -159,8 +159,8 @@
                     <p id="quizDifficultyBadge" class="text-xs text-gray-500 font-semibold"></p>
                 </div>
                 <div class="text-right">
-                    <div class="text-xs text-gray-500">ពេលវេលានៅសល់ (២ នាទី)</div>
-                    <div id="quizTimer" class="font-mono text-xl font-bold text-red-600">02:00</div>
+                    <div class="text-xs text-gray-500">ពេលវេលានៅសល់ (៦០ នាទី)</div>
+                    <div id="quizTimer" class="font-mono text-xl font-bold text-red-600">60:00</div>
                 </div>
             </div>
 
@@ -884,7 +884,7 @@
                         <p class="text-xs text-gray-500 mt-0.5">${t.desc}</p>
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t">
-                        <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">២០ សំណួរ (២ នាទី)</span>
+                        <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">២០ សំណួរ (៦០ នាទី)</span>
                         <div class="flex gap-1">
                             <button onclick="startQuiz(${t.id}, 'easy')" class="text-xs bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white px-2.5 py-1 rounded font-semibold transition">ងាយ</button>
                             <button onclick="startQuiz(${t.id}, 'medium')" class="text-xs bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white px-2.5 py-1 rounded font-semibold transition">មធ្យម</button>
@@ -940,7 +940,7 @@
             currIndex: 0,
             score: 0,
             timer: null,
-            timeLeft: 120
+            timeLeft: 3600 // 60 minutes in seconds (60 * 60)
         };
 
         function startQuiz(topicId, difficulty) {
@@ -950,7 +950,7 @@
             currentQuiz.questions = generate20Questions(topicId, difficulty);
             currentQuiz.currIndex = 0;
             currentQuiz.score = 0;
-            currentQuiz.timeLeft = 120; // 2 minutes
+            currentQuiz.timeLeft = 3600; // 60 minutes
 
             document.getElementById('studentDashboard').classList.add('hidden');
             document.getElementById('exerciseQuizView').classList.remove('hidden');
@@ -970,7 +970,7 @@
                 updateTimerDisplay();
                 if (currentQuiz.timeLeft <= 0) {
                     clearInterval(currentQuiz.timer);
-                    alert('អស់ពេល ២ នាទីហើយ! ប្រព័ន្ធនឹងគណនាពិន្ទុស្វ័យប្រវត្តិ។');
+                    alert('អស់ពេល ៦០ នាទីហើយ! ប្រព័ន្ធនឹងគណនាពិន្ទុស្វ័យប្រវត្តិ។');
                     finishQuiz();
                 }
             }, 1000);
